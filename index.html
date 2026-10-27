@@ -44,10 +44,10 @@
         <label>
           Measure
           <select id="trendMetric">
-            <option value="vmt_per_capita">Road travel per resident</option>
-            <option value="fuel_per_1000_vmt">Highway fuel per 1,000 VMT</option>
-            <option value="fuel_per_capita">Highway fuel per resident</option>
-            <option value="gasoline_consistency_pct">FHWA highway gasoline / EIA transport gasoline</option>
+            <option value="vmt_per_capita">Road travel per resident (miles)</option>
+            <option value="fuel_per_1000_vmt">Highway fuel per 1,000 VMT (gallons)</option>
+            <option value="fuel_per_capita">Highway fuel per resident (gallons)</option>
+            <option value="gasoline_consistency_pct">FHWA highway gasoline / EIA transport gasoline (%)</option>
           </select>
         </label>
         <label>
@@ -82,10 +82,10 @@
         <label>
           Map measure
           <select id="mapMetric">
-            <option value="vmt_per_capita">Road travel per resident</option>
-            <option value="fuel_per_1000_vmt">Highway fuel per 1,000 VMT</option>
-            <option value="fuel_per_capita">Highway fuel per resident</option>
-            <option value="gasoline_consistency_pct">Gasoline consistency ratio</option>
+            <option value="vmt_per_capita">Road travel per resident (miles)</option>
+            <option value="fuel_per_1000_vmt">Highway fuel per 1,000 VMT (gallons)</option>
+            <option value="fuel_per_capita">Highway fuel per resident (gallons)</option>
+            <option value="gasoline_consistency_pct">Gasoline consistency ratio (%)</option>
           </select>
         </label>
       </div>
@@ -119,15 +119,15 @@
       <h2 id="method-title">How to read the measures</h2>
 
       <details open>
-        <summary>Road travel per resident (VMT per capita)</summary>
+        <summary>Road travel per resident (miles per resident)</summary>
         <p>FHWA vehicle miles traveled on public roads divided by resident population. It includes cars, trucks, buses, motorcycles, freight and visitor traffic. It is a measure of road travel relative to population, not the number of miles driven by the average resident.</p>
       </details>
       <details>
-        <summary>Highway fuel per 1,000 VMT</summary>
+        <summary>Highway fuel use (gallons per 1,000 VMT)</summary>
         <p>FHWA highway gasoline plus highway special fuel divided by FHWA road VMT. Lower values mean fewer reported gallons are used for the same amount of road travel. The measure can reflect vehicle efficiency, vehicle mix, freight activity and other factors. It is not the same as passenger-vehicle MPG.</p>
       </details>
       <details>
-        <summary>Gasoline consistency ratio</summary>
+        <summary>Gasoline consistency ratio (%)</summary>
         <p>FHWA highway gasoline divided by EIA transportation-sector motor gasoline. EIA's transportation gasoline measure is broader than highway-only gasoline, so the ratio is a reconciliation check rather than a literal “share of transportation on highways.”</p>
       </details>
       <details>
