@@ -1,8 +1,8 @@
 const DASH={data:null,selectedStates:["California","Texas","New York"],maxStates:6,metrics:{
-vmt_per_capita:{label:"Road travel per resident",short:"VMT per resident",unit:"miles per resident",note:"FHWA road VMT divided by resident population. This measures road-travel intensity relative to population."},
-fuel_per_1000_vmt:{label:"Highway fuel per 1,000 VMT",short:"Fuel per 1,000 VMT",unit:"gallons per 1,000 VMT",note:"Lower values mean fewer reported highway-fuel gallons for the same amount of road travel. This is a system-level intensity measure, not passenger-vehicle MPG."},
-fuel_per_capita:{label:"Highway fuel per resident",short:"Fuel per resident",unit:"gallons per resident",note:"This combines how much road travel occurs with how much fuel is used per mile."},
-gasoline_consistency_pct:{label:"FHWA highway gasoline / EIA transport gasoline",short:"Gasoline consistency",unit:"percent",note:"A reconciliation check between FHWA highway gasoline and EIA transportation motor gasoline. It is not a literal highway share."}}};
+vmt_per_capita:{label:"Road travel per resident",short:"VMT per resident",unit:"miles per resident",note:"FHWA road VMT divided by resident population. This shows how much road travel occurs relative to the size of a state's population."},
+fuel_per_1000_vmt:{label:"Highway fuel per 1,000 VMT",short:"Fuel per 1,000 VMT",unit:"gallons per 1,000 VMT",note:"Lower values mean fewer reported highway-fuel gallons for the same amount of road travel. This measure is not the same as passenger-vehicle MPG."},
+fuel_per_capita:{label:"Highway fuel per resident",short:"Fuel per resident",unit:"gallons per resident",note:"This measure reflects both the amount of road travel and the amount of fuel used per mile."},
+gasoline_consistency_pct:{label:"FHWA highway gasoline / EIA transport gasoline",short:"Gasoline consistency",unit:"percent",note:"This compares FHWA highway gasoline with EIA transportation motor gasoline. It is a consistency check, not a literal highway share."}}};
 const $=id=>document.getElementById(id);
 const recordsForState=s=>DASH.data.records.filter(r=>r.state===s).sort((a,b)=>a.year-b.year);
 const nationalForYear=y=>DASH.data.national.find(r=>r.year===y);
