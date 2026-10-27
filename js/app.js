@@ -12,7 +12,40 @@ function renderChips(){const e=$("stateChips");e.innerHTML="";DASH.selectedState
 function addState(s){if(!s||DASH.selectedStates.includes(s))return;if(DASH.selectedStates.length>=DASH.maxStates){alert("Choose up to 6 states at a time.");return}DASH.selectedStates.push(s);renderAllComparison()}
 function renderStats(){const a=nationalForYear(2000),b=nationalForYear(2024);const vc=(b.vmt_per_capita/a.vmt_per_capita-1)*100,ic=(b.fuel_per_1000_vmt/a.fuel_per_1000_vmt-1)*100;$("nationalStats").innerHTML=`<div class="stat"><div class="value">${Math.round(b.vmt_per_capita).toLocaleString()}</div><div class="label">miles of road travel per resident, 2024</div></div><div class="stat"><div class="value">${b.fuel_per_1000_vmt.toFixed(1)}</div><div class="label">highway fuel gallons per 1,000 VMT, 2024</div></div><div class="stat"><div class="value">${vc.toFixed(1)}%</div><div class="label">change in VMT per resident, 2000–2024</div></div><div class="stat"><div class="value">${ic.toFixed(1)}%</div><div class="label">change in fuel intensity, 2000–2024</div></div>`}
 function renderTrend(){const k=$("trendMetric").value,m=DASH.metrics[k];const t=DASH.selectedStates.map(s=>{const r=recordsForState(s);return{x:r.map(x=>x.year),y:r.map(x=>x[k]),type:"scatter",mode:"lines+markers",name:s}});if($("showNational").checked)t.push({x:DASH.data.national.map(r=>r.year),y:DASH.data.national.map(r=>r[k]),type:"scatter",mode:"lines",name:"U.S. benchmark",line:{width:4,dash:"dot"}});Plotly.react("trendChart",t,{margin:{l:70,r:20,t:24,b:60},xaxis:{title:"Year",dtick:4},yaxis:{title:m.unit,automargin:true},legend:{orientation:"h",y:-.2},hovermode:"x unified",paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});$("trendExplanation").textContent=m.note}
-function renderMap(){const y=+$("mapYear").value,k=$("mapMetric").value,m=DASH.metrics[k],r=currentStatesAt(y);$("mapYearLabel").textContent=y;Plotly.react("mapChart",[{type:"choropleth",locationmode:"USA-states",locations:r.map(x=>x.abbr),z:r.map(x=>x[k]),text:r.map(x=>x.state),customdata:r.map(x=>[x.state,x[k]]),hovertemplate:`<b>%{customdata[0]}</b><br>${m.label}: %{customdata[1]:.2f}<extra></extra>`,colorbar:{title:m.short}}],{geo:{scope:"usa",bgcolor:"#fff"},margin:{l:0,r:0,t:8,b:0},paper_bgcolor:"#fff"},{responsive:true,displaylogo:false});$("mapFootnote").textContent=m.note;const p=$("mapChart");p.removeAllListeners?.("plotly_click");p.on("plotly_click",e=>{const a=e.points?.[0]?.location;const rec=r.find(x=>x.abbr===a);if(rec)addState(rec.state)})}
+function formatRankValue(v,k){
+  if(k==="vmt_per_capita"||k==="fuel_per_capita") return Math.round(v).toLocaleString();
+  if(k==="fuel_per_1000_vmt") return v.toFixed(1);
+  if(k==="gasoline_consistency_pct") return v.toFixed(1)+"%";
+  return Number(v).toLocaleString();
+}
+function renderRanking(y,k,m,r){
+  const ranked=[...r].filter(x=>Number.isFinite(x[k])).sort((a,b)=>b[k]-a[k]);
+  const display=[...ranked].reverse();
+  const labels=display.map(x=>`${ranked.findIndex(z=>z.state===x.state)+1}. ${x.state}`);
+  Plotly.react("rankingChart",[{
+    type:"bar",
+    orientation:"h",
+    x:display.map(x=>x[k]),
+    y:labels,
+    text:display.map(x=>formatRankValue(x[k],k)),
+    textposition:"outside",
+    cliponaxis:false,
+    customdata:display.map(x=>[x.state,x.abbr,ranked.findIndex(z=>z.state===x.state)+1]),
+    hovertemplate:`<b>%{customdata[2]}. %{customdata[0]}</b><br>${m.label}: %{x:,.2f}<extra></extra>`,
+    marker:{color:"#6f8997"}
+  }],{
+    margin:{l:130,r:65,t:10,b:55},
+    xaxis:{title:m.unit,automargin:true,zeroline:false},
+    yaxis:{automargin:true,tickfont:{size:11}},
+    bargap:.24,
+    paper_bgcolor:"#fff",
+    plot_bgcolor:"#fff"
+  },{responsive:true,displaylogo:false});
+  const p=$("rankingChart");
+  p.removeAllListeners?.("plotly_click");
+  p.on("plotly_click",e=>{const s=e.points?.[0]?.customdata?.[0];if(s)addState(s)});
+}
+function renderMap(){const y=+$("mapYear").value,k=$("mapMetric").value,m=DASH.metrics[k],r=currentStatesAt(y);$("mapYearLabel").textContent=y;Plotly.react("mapChart",[{type:"choropleth",locationmode:"USA-states",locations:r.map(x=>x.abbr),z:r.map(x=>x[k]),text:r.map(x=>x.state),customdata:r.map(x=>[x.state,x[k]]),hovertemplate:`<b>%{customdata[0]}</b><br>${m.label}: %{customdata[1]:.2f}<extra></extra>`,colorbar:{title:m.short}}],{geo:{scope:"usa",bgcolor:"#fff"},margin:{l:0,r:0,t:8,b:0},paper_bgcolor:"#fff"},{responsive:true,displaylogo:false});renderRanking(y,k,m,r);$("mapFootnote").textContent=m.note;const p=$("mapChart");p.removeAllListeners?.("plotly_click");p.on("plotly_click",e=>{const a=e.points?.[0]?.location;const rec=r.find(x=>x.abbr===a);if(rec)addState(rec.state)})}
 function renderScatter(){const y=+$("scatterYear").value,r=currentStatesAt(y),n=nationalForYear(y);$("scatterYearLabel").textContent=y;Plotly.react("scatterChart",[{type:"scatter",mode:"markers",x:r.map(x=>x.vmt_per_capita),y:r.map(x=>x.fuel_per_1000_vmt),text:r.map(x=>x.state),customdata:r.map(x=>[x.state]),marker:{size:r.map(x=>DASH.selectedStates.includes(x.state)?13:9),color:r.map(x=>DASH.selectedStates.includes(x.state)?"#245b78":"#8aa2af"),opacity:.85,line:{width:1,color:"#fff"}},hovertemplate:"<b>%{text}</b><br>VMT per resident: %{x:,.0f}<br>Fuel per 1,000 VMT: %{y:.1f}<extra></extra>"}],{margin:{l:78,r:20,t:24,b:70},xaxis:{title:"Road VMT (miles per resident)"},yaxis:{title:"Highway fuel use (gallons per 1,000 VMT)"},shapes:[{type:"line",x0:n.vmt_per_capita,x1:n.vmt_per_capita,y0:0,y1:1,yref:"paper",line:{color:"#6e7d87",dash:"dash",width:1}},{type:"line",y0:n.fuel_per_1000_vmt,y1:n.fuel_per_1000_vmt,x0:0,x1:1,xref:"paper",line:{color:"#6e7d87",dash:"dash",width:1}}],paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});const p=$("scatterChart");p.removeAllListeners?.("plotly_click");p.on("plotly_click",e=>{const s=e.points?.[0]?.customdata?.[0];if(s)addState(s)})}
 function renderAllComparison(){renderChips();renderTrend();renderScatter()}
 function wireControls(){$("addStateBtn").addEventListener("click",()=>addState($("statePicker").value));$("trendMetric").addEventListener("change",renderTrend);$("showNational").addEventListener("change",renderTrend);$("mapMetric").addEventListener("change",renderMap);$("mapYear").addEventListener("input",renderMap);$("scatterYear").addEventListener("input",renderScatter)}
