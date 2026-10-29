@@ -1,32 +1,422 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>U.S. Transportation Emissions Explorer</title>
+  <meta name="description" content="State-level road travel, highway fuel use, vehicle mix, and transportation CO2 from 2000 to 2024 using FHWA and EIA data.">
+  <style>*{box-sizing:border-box}
+:root{--ink:#17202a;--muted:#5f6b76;--line:#dfe5ea;--soft:#f5f7f8;--accent:#245b78;--accent-soft:#e9f1f5;--warn:#7a5418;--warn-soft:#fff7e8;--max:1180px}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:#fff;line-height:1.55}
+a{color:#195a7c;text-decoration-thickness:1px;text-underline-offset:2px}.wrap{width:min(var(--max),calc(100% - 32px));margin:0 auto}
+.site-header{padding:56px 0 42px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#f8fbfc 0%,#fff 100%)}
+.eyebrow{font-size:.78rem;font-weight:750;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+h1{font-size:clamp(2.2rem,5vw,4rem);line-height:1.02;letter-spacing:-.035em;margin:0;max-width:940px}
+h2{font-size:clamp(1.55rem,3vw,2.25rem);line-height:1.12;letter-spacing:-.02em;margin:0 0 8px}h3{margin:0 0 6px}
+.lede{font-size:1.15rem;color:var(--muted);max-width:820px;margin:18px 0 0}.source-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}.source-badges a{font-size:.85rem;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--muted);text-decoration:none}.source-badges a:hover{border-color:#aac1cd;color:var(--accent)}
+.section-nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}.nav-inner{display:flex;gap:20px;overflow-x:auto;padding-top:10px;padding-bottom:10px}.nav-inner a{white-space:nowrap;font-size:.84rem;font-weight:700;color:#43515c;text-decoration:none}.nav-inner a:hover{color:var(--accent)}
+.intro-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:32px;padding:44px 0 8px}.intro-grid p{max-width:780px}.caution{padding:12px 14px;background:var(--warn-soft);border-left:4px solid #d9a33a;border-radius:6px;color:#5f471d}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start}.stat{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff}.stat .value{font-size:1.55rem;font-weight:800;line-height:1.1}.stat .label{font-size:.82rem;color:var(--muted);margin-top:5px}
+.panel{margin:32px 0;border-top:1px solid var(--line);padding:36px 0 8px;scroll-margin-top:54px}.section-heading{margin-bottom:18px}.section-heading p{color:var(--muted);margin:6px 0 0;max-width:900px}.section-heading.split{display:flex;justify-content:space-between;gap:28px;align-items:flex-end}.subheading{margin-top:30px}.subheading h3{font-size:1.25rem}
+.walkthrough-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}.walkthrough-grid article{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff}.walkthrough-grid article p{font-size:.9rem;color:var(--muted);margin-bottom:0}.step-no{width:30px;height:30px;border-radius:999px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-weight:800;margin-bottom:12px}
+.controls{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:12px 0 14px}.controls label,.year-control label{display:flex;flex-direction:column;gap:5px;font-size:.82rem;font-weight:700;color:#39434d}.compact-controls{margin:0}.compact-controls label{min-width:150px}
+select,button,input[type="range"]{font:inherit}select{min-height:44px;padding:8px 34px 8px 10px;border:1px solid #bcc7cf;border-radius:8px;background:#fff;color:var(--ink)}button{min-height:44px;padding:8px 15px;border:0;border-radius:8px;background:var(--accent);color:#fff;font-weight:750;cursor:pointer}button:hover{filter:brightness(.94)}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid rgba(36,91,120,.25);outline-offset:2px}.check-label{flex-direction:row!important;align-items:center;min-height:44px;padding:0 4px}.check-label input{width:18px;height:18px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 10px}.chip{background:var(--accent-soft);color:#183d50;border:1px solid #c7dbe5;border-radius:999px;min-height:34px;padding:5px 10px;font-size:.85rem}.chip:hover{filter:none;background:#dbeaf1}.plain-note{font-size:.92rem;color:#43515c;padding:12px 14px;background:var(--soft);border-radius:8px;margin-bottom:10px}
+.chart{width:100%;min-height:420px}.chart-lg{min-height:520px}.chart-map{min-height:590px}.chart-ranking{height:1120px;min-height:1120px}.map-ranking-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(400px,.85fr);gap:28px;align-items:start}.viz-heading{font-size:1rem;margin:8px 0 4px}.ranking-scroll{max-height:620px;overflow-y:auto;border:1px solid var(--line);border-radius:10px;background:#fff}.year-control{min-width:220px}.year-control input{width:220px}.footnote{font-size:.82rem;color:var(--muted);margin-top:10px}
+.quadrant-guide{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;font-size:.86rem;color:var(--muted);background:var(--soft);padding:14px;border-radius:10px}.emissions-stats{grid-template-columns:repeat(3,1fr);margin:20px 0}.takeaway-box{margin-top:20px;border-left:4px solid var(--accent);background:var(--accent-soft);padding:16px 18px;border-radius:8px}.takeaway-box p{margin:7px 0;color:#334c5a}
+.method-intro{color:var(--muted)}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin:18px 0 22px}.source-table{width:100%;border-collapse:collapse;min-width:900px;font-size:.88rem}.source-table th,.source-table td{padding:12px 13px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}.source-table th{background:var(--soft);font-size:.8rem}.source-table tr:last-child td{border-bottom:0}.methodology details{border-bottom:1px solid var(--line);padding:12px 0}.methodology summary{font-weight:750;cursor:pointer}.methodology details p{color:var(--muted);max-width:950px}
+.present-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}.present-grid>div{padding:17px;border:1px solid var(--line);border-radius:10px}.present-grid p{color:var(--muted);margin-bottom:0}
+footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;color:var(--muted);font-size:.85rem}
+@media (max-width:1000px){.walkthrough-grid{grid-template-columns:1fr 1fr}.emissions-stats{grid-template-columns:1fr 1fr}}
+@media (max-width:900px){.map-ranking-grid{grid-template-columns:1fr}.ranking-scroll{max-height:620px}.chart-map{min-height:500px}}
+@media (max-width:760px){.site-header{padding:38px 0 30px}.intro-grid{grid-template-columns:1fr}.stat-grid,.emissions-stats{grid-template-columns:1fr 1fr}.section-heading.split{display:block}.year-control{margin-top:16px}.year-control input{width:100%}.controls>*{width:100%}.controls button{width:auto}.check-label{width:auto}.chart-lg,.chart-map,.chart{min-height:430px}.chart-ranking{height:1080px;min-height:1080px}.quadrant-guide,.present-grid,.walkthrough-grid{grid-template-columns:1fr}.nav-inner{gap:14px}.compact-controls{margin-top:14px}}
+@media (max-width:420px){.stat-grid,.emissions-stats{grid-template-columns:1fr}}
+</style>
+  <script src="https://cdn.plot.ly/plotly-3.1.0.min.js"></script>
 </head>
 <body>
-  <main style="font-family:system-ui,sans-serif;max-width:800px;margin:80px auto;padding:0 20px">
-    <h1>U.S. Transportation Emissions Explorer</h1>
-    <p>Loading research dashboard…</p>
+  <header class="site-header">
+    <div class="wrap">
+      <p class="eyebrow">Transportation data explorer | 2000 to 2024</p>
+      <h1>U.S. Transportation Emissions Explorer</h1>
+      <p class="lede">State-level road travel, highway fuel use, vehicle mix, and transportation CO₂.</p>
+      <div class="source-badges" aria-label="Main data sources">
+        <a href="https://www.fhwa.dot.gov/policyinformation/statistics/2024/" target="_blank" rel="noopener">FHWA Highway Statistics</a>
+        <a href="https://www.eia.gov/state/seds/seds-data-complete.php" target="_blank" rel="noopener">EIA SEDS</a>
+        <a href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator-calculations-and-references" target="_blank" rel="noopener">EPA emission factors</a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="section-nav" aria-label="Page sections">
+    <div class="wrap nav-inner">
+      <a href="#walkthrough">Project logic</a>
+      <a href="#road-fuel">Road travel & fuel</a>
+      <a href="#vehicle-mix">Vehicle mix</a>
+      <a href="#emissions">Transportation emissions</a>
+      <a href="#methods">Data &amp; methods</a>
+      <a href="#present">How to present it</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section class="intro-grid" aria-labelledby="headline-findings">
+      <div>
+        <p class="eyebrow">Project overview</p>
+        <h2 id="headline-findings">What the analysis is trying to explain</h2>
+        <p>The project focuses on two questions: why highway fuel use differs across states, and how road transportation fits into total transportation CO₂ emissions.</p>
+        <p>In 2024, road travel per resident was close to its 2000 level, while reported highway fuel use per 1,000 vehicle miles was lower. That points to lower fuel use per mile, rather than a sustained decline in travel, as the larger long-run contributor to lower highway fuel use per resident.</p>
+        <p class="caution"><strong>2024 fuel note:</strong> FHWA's 2024 MF-21 documentation warns that revised estimation procedures and state reporting changes can affect comparability with prior years. We show 2024 as the latest observation, but rely more heavily on 2000–2023 for structural comparisons.</p>
+      </div>
+      <div class="stat-grid" id="nationalStats" aria-live="polite"></div>
+    </section>
+
+    <section class="panel" id="walkthrough" aria-labelledby="walkthrough-title">
+      <p class="eyebrow">Project logic</p>
+      <h2 id="walkthrough-title">The analysis in three steps</h2>
+      <div class="walkthrough-grid">
+        <article><div class="step-no">1</div><h3>Separate travel from fuel intensity</h3><p>Use VMT per resident to measure how much road travel occurs and gallons per 1,000 VMT to measure how much reported highway fuel is used for that travel.</p></article>
+        <article><div class="step-no">2</div><h3>Use vehicle mix as context</h3><p>Combine VM-4 vehicle percentages with VM-2 road VMT to estimate statewide light-truck and heavy-truck shares. Vehicle mix explains some, but not most, of the differences in fuel intensity.</p></article>
+        <article><div class="step-no">3</div><h3>Connect roads to transportation CO₂</h3><p>Convert FHWA highway fuel to an on-road CO₂ proxy and compare it with EIA's broader transportation-sector CO₂ estimate.</p></article>
+      </div>
+    </section>
+
+    <section class="panel" id="road-fuel" aria-labelledby="compare-title">
+      <div class="section-heading">
+        <p class="eyebrow">Road travel and highway fuel</p>
+        <h2 id="compare-title">How have states changed over time?</h2>
+        <p>Road travel comes from FHWA <a href="https://datahub.transportation.gov/Roadways-and-Bridges/Vehicle-Miles-of-Travel-by-Functional-System-and-S/nps9-3pm2/about_data" target="_blank" rel="noopener">VM-2</a>. Highway fuel comes from FHWA <a href="https://data.transportation.gov/Roadways-and-Bridges/Motor-Fuel-Use-2000-2024-MF-21-/ef8t-7afc" target="_blank" rel="noopener">MF-21</a>, with MF-225/MF-226 used only for historical gaps in the project panel.</p>
+      </div>
+
+      <div class="controls controls-compare">
+        <label>Measure
+          <select id="trendMetric">
+            <option value="vmt_per_capita">Road travel per resident (miles)</option>
+            <option value="fuel_per_1000_vmt">Highway fuel per 1,000 VMT (gallons)</option>
+            <option value="fuel_per_capita">Highway fuel per resident (gallons)</option>
+          </select>
+        </label>
+        <label>Add a state <select id="statePicker"></select></label>
+        <button type="button" id="addStateBtn">Add state</button>
+        <label class="check-label"><input type="checkbox" id="showNational" checked>Show U.S. benchmark</label>
+      </div>
+
+      <div id="stateChips" class="chips" aria-label="Selected states"></div>
+      <div id="trendExplanation" class="plain-note"></div>
+      <div id="trendChart" class="chart chart-lg" aria-label="State trend comparison chart"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="map-title">
+      <div class="section-heading split">
+        <div>
+          <p class="eyebrow">State comparison</p>
+          <h2 id="map-title">Map and state ranking</h2>
+          <p>Select a year and measure. The map and ranking use the same data.</p>
+        </div>
+        <div class="year-control">
+          <label for="mapYear">Year: <strong id="mapYearLabel">2024</strong></label>
+          <input id="mapYear" type="range" min="2000" max="2024" value="2024" step="1">
+        </div>
+      </div>
+      <div class="controls">
+        <label>Map measure
+          <select id="mapMetric">
+            <option value="vmt_per_capita">Road travel per resident (miles)</option>
+            <option value="fuel_per_1000_vmt">Highway fuel per 1,000 VMT (gallons)</option>
+            <option value="fuel_per_capita">Highway fuel per resident (gallons)</option>
+          </select>
+        </label>
+      </div>
+      <div class="map-ranking-grid">
+        <div><h3 class="viz-heading">U.S. map</h3><div id="mapChart" class="chart chart-map" aria-label="United States state comparison map"></div></div>
+        <div><h3 class="viz-heading">State ranking</h3><div class="ranking-scroll"><div id="rankingChart" class="chart chart-ranking" aria-label="State ranking bar chart"></div></div></div>
+      </div>
+      <p id="mapFootnote" class="footnote"></p>
+    </section>
+
+    <section class="panel" aria-labelledby="drivers-title">
+      <div class="section-heading split">
+        <div>
+          <p class="eyebrow">Travel and fuel intensity</p>
+          <h2 id="drivers-title">Road travel and fuel use per mile</h2>
+          <p>Each point is a state. The reference lines are the national values for that year. The quadrants are descriptive, not grades.</p>
+        </div>
+        <div class="year-control">
+          <label for="scatterYear">Year: <strong id="scatterYearLabel">2024</strong></label>
+          <input id="scatterYear" type="range" min="2000" max="2024" value="2024" step="1">
+        </div>
+      </div>
+      <div id="scatterChart" class="chart chart-lg" aria-label="State road travel versus fuel intensity scatterplot"></div>
+      <div class="quadrant-guide">
+        <div><strong>Upper right:</strong> above-U.S. VMT and above-U.S. fuel intensity</div>
+        <div><strong>Lower right:</strong> above-U.S. VMT and below-U.S. fuel intensity</div>
+        <div><strong>Upper left:</strong> below-U.S. VMT and above-U.S. fuel intensity</div>
+        <div><strong>Lower left:</strong> below-U.S. VMT and below-U.S. fuel intensity</div>
+      </div>
+    </section>
+
+    <section class="panel" id="road-fuel-findings" aria-labelledby="road-fuel-findings-title">
+      <div class="section-heading">
+        <p class="eyebrow">Road travel and highway fuel | Main findings</p>
+        <h2 id="road-fuel-findings-title">What the road-travel and fuel results show</h2>
+      </div>
+      <div class="takeaway-box">
+        <h3>Nationally, lower fuel use per resident is mostly a fuel-intensity story, not a sustained decline in travel.</h3>
+        <p>From 2000 to 2023, VMT per resident changed very little (about −1%), while highway fuel use per 1,000 VMT fell about 7.8%. Highway fuel use per resident fell about 8.7%. In other words, the long-run decline in fuel use per person came mainly from using less fuel for a given amount of road travel.</p>
+        <p>The sharp drop in 2020 was different: it was primarily a temporary travel shock. VMT per resident fell about 11.9% from 2019 to 2020 and then recovered substantially.</p>
+        <p>State differences come from different combinations of travel and fuel intensity. Wyoming is a clear example of both high VMT and high fuel intensity. California is low on both measures. Indiana has high VMT but comparatively low fuel intensity, while Alaska has lower VMT but high fuel intensity. The quadrant chart is useful for identifying these different pathways; it is not a scorecard.</p>
+        <p>Vehicle mix helps explain some of the fuel-intensity differences. States with larger light-truck and heavy-truck shares tend to use more fuel per 1,000 VMT, but the relationship is only partial. In 2023, light- and heavy-truck shares together explained about 22% of the cross-state variation in fuel intensity.</p>
+        <p><strong>Bottom line:</strong> highway fuel use per resident is best understood as the result of two separate drivers: how much road travel occurs and how fuel-intensive that travel is. States differ in which of those drivers matters more, so one metric alone does not describe the full transportation picture.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="vehicle-mix" aria-labelledby="mix-title">
+      <div class="section-heading">
+        <p class="eyebrow">Vehicle mix | Supporting analysis</p>
+        <h2 id="mix-title">Do pickups, SUVs, and heavy trucks explain fuel intensity?</h2>
+        <p>FHWA <a href="https://www.fhwa.dot.gov/policyinformation/statistics/2024/vm4.cfm" target="_blank" rel="noopener">VM-4</a> gives the vehicle mix within Interstate, Other Arterials, and Other roads, separately for rural and urban travel. We weight those percentages by actual road VMT from <a href="https://www.fhwa.dot.gov/policyinformation/statistics/2024/vm2.cfm" target="_blank" rel="noopener">VM-2</a> to estimate statewide vehicle shares.</p>
+        <p>In 2023, the combined light- and heavy-truck share had a moderate relationship with gallons per 1,000 VMT (correlation about 0.45). Light- and heavy-truck shares together explained about 22% of the cross-state variation. Vehicle mix matters, but it is not the whole explanation.</p>
+      </div>
+      <div class="controls">
+        <label>Vehicle-mix measure
+          <select id="mixMetric">
+            <option value="l">Light trucks: pickups, SUVs, vans (% of VMT)</option>
+            <option value="h">Heavy trucks (% of VMT)</option>
+            <option value="t">Light + heavy trucks (% of VMT)</option>
+          </select>
+        </label>
+      </div>
+      <div id="vehicleMixChart" class="chart chart-lg" aria-label="Vehicle mix versus highway fuel intensity"></div>
+      <p class="footnote">This chart uses 2023, a complete VM-4 year before the 2024 MF-21 comparability concern. VM-4 does not isolate pickup trucks from SUVs and vans; they are grouped as light trucks.</p>
+    </section>
+
+    <section class="panel" id="emissions" aria-labelledby="emissions-title">
+      <div class="section-heading">
+        <p class="eyebrow">Transportation emissions</p>
+        <h2 id="emissions-title">How does highway fuel use fit into total transportation emissions?</h2>
+        <p>EIA SEDS <a href="https://www.eia.gov/environment/emissions/state/" target="_blank" rel="noopener">transportation-sector CO₂</a> includes the broader transportation system. We compare it with an on-road proxy derived from FHWA MF-21 highway gasoline and special fuel. Gasoline is converted using 8,887 g CO₂/gallon and special fuel using 10,180 g CO₂/gallon as a diesel proxy, following the <a href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator-calculations-and-references" target="_blank" rel="noopener">EPA factors used in this project</a>.</p>
+        <p>The FHWA result is an approximation, not an inventory. FHWA “special fuel” is not pure diesel, and the historical project series uses private/commercial highway special fuel for consistency. The ratio to EIA transportation CO₂ is therefore a reconciliation measure, not a literal emissions share.</p>
+      </div>
+      <div class="stat-grid emissions-stats" id="emissionsStats"></div>
+      <div id="emissionsNationalChart" class="chart chart-lg" aria-label="National transportation CO2 trend"></div>
+
+      <div class="section-heading split subheading">
+        <div><h3>State emissions comparison</h3><p>Use 2023 for the cleaner cross-state comparison; 2024 is provided as the latest observation.</p></div>
+        <div class="controls compact-controls">
+          <label>Year <select id="emissionsYear"><option value="2023">2023</option><option value="2024" selected>2024</option></select></label>
+          <label>Measure
+            <select id="emissionsMetric">
+              <option value="p">EIA transportation CO₂ per resident (metric tons)</option>
+              <option value="e">EIA transportation CO₂ total (million metric tons)</option>
+              <option value="q">FHWA on-road CO₂ proxy per resident (metric tons)</option>
+              <option value="r">FHWA on-road proxy / EIA transportation CO₂ (%)</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="map-ranking-grid">
+        <div><h3 class="viz-heading">U.S. map</h3><div id="emissionsMap" class="chart chart-map" aria-label="State transportation emissions map"></div></div>
+        <div><h3 class="viz-heading">State ranking</h3><div class="ranking-scroll"><div id="emissionsRanking" class="chart chart-ranking" aria-label="State transportation emissions ranking"></div></div></div>
+      </div>
+      <div class="takeaway-box">
+        <h3>How to read the emissions analysis</h3>
+        <p>National transportation CO₂ was 1,863.6 million metric tons in 2024, about 7.8% below the 2007 peak. Per-capita transportation CO₂ was 5.48 metric tons, about 18% below 2000. The on-road proxy equaled 87.8% of EIA transportation CO₂ in 2023 and 84.6% in 2024.</p>
+        <p>Low ratios in states such as Alaska, Hawaii, Louisiana, and Washington can reflect a larger role for aviation, marine, pipeline, or other non-road transportation. Ratios above 100% are accounting and scope mismatches; they are not evidence of negative non-road emissions.</p>
+      </div>
+    </section>
+
+    <section class="panel methodology" id="methods" aria-labelledby="method-title">
+      <p class="eyebrow">Data and methods</p>
+      <h2 id="method-title">Datasets used in the project</h2>
+      <p class="method-intro">The table below is the audit trail. Each dataset has a specific job in the analysis.</p>
+      <div class="table-wrap">
+        <table class="source-table">
+          <thead><tr><th>Dataset</th><th>What we use it for</th><th>Project measure</th><th>Official source</th></tr></thead>
+          <tbody>
+            <tr><td>FHWA MF-21 Motor-Fuel Use</td><td>State highway gasoline and special fuel</td><td>Highway fuel and on-road CO₂ proxy</td><td><a href="https://data.transportation.gov/Roadways-and-Bridges/Motor-Fuel-Use-2000-2024-MF-21-/ef8t-7afc" target="_blank" rel="noopener">DOT dataset</a> · <a href="https://www.fhwa.dot.gov/policyinformation/statistics/2024/mf21.cfm" target="_blank" rel="noopener">2024 table/notes</a></td></tr>
+            <tr><td>FHWA VM-2 Functional System Travel</td><td>Annual public-road VMT by state and functional system</td><td>VMT per capita, gallons per 1,000 VMT, rural/urban weighting</td><td><a href="https://datahub.transportation.gov/Roadways-and-Bridges/Vehicle-Miles-of-Travel-by-Functional-System-and-S/nps9-3pm2/about_data" target="_blank" rel="noopener">DOT dataset</a> · <a href="https://www.fhwa.dot.gov/policyinformation/statistics/2024/vm2.cfm" target="_blank" rel="noopener">2024 table</a></td></tr>
+            <tr><td>FHWA VM-4 Vehicle Distance by Vehicle Type</td><td>Vehicle percentages within rural/urban road groups</td><td>Passenger-car, light-truck, and heavy-truck VMT shares</td><td><a href="https://data.transportation.gov/d/wafx-xpmf" target="_blank" rel="noopener">DOT 2009–2024 dataset</a> · <a href="https://www.fhwa.dot.gov/policyinformation/statistics/2024/vm4.cfm" target="_blank" rel="noopener">2024 table</a></td></tr>
+            <tr><td>EIA SEDS use_all_phy.csv</td><td>Population (TPOPP)</td><td>Population denominator for per-capita measures</td><td><a href="https://www.eia.gov/state/seds/seds-data-complete.php" target="_blank" rel="noopener">SEDS complete data</a></td></tr>
+            <tr><td>EIA SEDS co2_all.csv</td><td>Total transportation-sector energy-related CO₂ (TEACE)</td><td>Total transportation CO₂ and CO₂ per capita</td><td><a href="https://www.eia.gov/state/seds/seds-data-complete.php" target="_blank" rel="noopener">SEDS complete data</a> · <a href="https://www.eia.gov/environment/emissions/state/" target="_blank" rel="noopener">CO₂ tables</a></td></tr>
+            <tr><td>FHWA MF-225 / MF-226</td><td>Historical backup only where MF-21 values are missing</td><td>Gap fills in the project panel</td><td><a href="https://www.fhwa.dot.gov/policyinformation/statistics/2024/mf225.cfm" target="_blank" rel="noopener">MF-225</a> · <a href="https://www.fhwa.dot.gov/policyinformation/statistics/2024/mf226.cfm" target="_blank" rel="noopener">MF-226</a></td></tr>
+            <tr><td>EPA CO₂-per-gallon factors</td><td>Convert reported fuel gallons to an approximate tailpipe CO₂ quantity</td><td>8,887 g/gal gasoline; 10,180 g/gal diesel proxy for special fuel</td><td><a href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator-calculations-and-references" target="_blank" rel="noopener">EPA calculations and references</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <details open><summary>Why VM-4 and VM-2 are combined</summary><p>VM-4 percentages sum to 100% within each road group. We do not average those percentages. We multiply each VM-4 vehicle percentage by the matching VM-2 VMT for that road group, then sum the estimated vehicle VMT across rural and urban road groups. This gives a statewide VMT-weighted vehicle mix.</p></details>
+      <details><summary>What “highway fuel per 1,000 VMT” means</summary><p>Reported FHWA highway fuel divided by public-road VMT. It is a system-level fuel-intensity measure. It can reflect fleet efficiency, vehicle mix, freight, road conditions, travel patterns, and differences in fuel/VMT accounting. It is not passenger-vehicle MPG.</p></details>
+      <details><summary>What the 2024 caution means</summary><p>FHWA's 2024 MF-21 notes revised estimation procedures for public and non-highway use and warns that some state data may not be comparable with prior years because of reporting or analysis changes. Our highway-fuel series also shows a larger-than-usual national change in 2024. We therefore show 2024 but avoid making strong structural claims from the one-year movement.</p></details>
+      <details><summary>Why the on-road CO₂ ratio can exceed 100%</summary><p>The numerator and denominator come from different systems with different fuel definitions, allocation methods, revisions, and sector boundaries. A value above 100% is a reconciliation flag. We do not cap it and do not interpret it as a literal physical share.</p></details>
+      <p class="footnote">EIA methodology and variable definitions are documented in the <a href="https://www.eia.gov/state/seds/seds-technical-notes-complete.php" target="_blank" rel="noopener">SEDS technical notes</a>.</p>
+    </section>
+
+    <section class="panel" id="present" aria-labelledby="present-title">
+      <p class="eyebrow">For presentations</p>
+      <h2 id="present-title">How to explain the project without retracing every analysis step</h2>
+      <div class="present-grid">
+        <div>
+          <h3>The one-minute version</h3>
+          <p>We separate highway fuel use into two drivers: how much road travel occurs and how much fuel is used per mile. Vehicle mix helps explain some state differences, but not all of them. Then we compare a highway-fuel CO₂ proxy with EIA's broader transportation CO₂ estimate to show where road transportation fits in the full transportation sector.</p>
+        </div>
+        <div>
+          <h3>What not to claim</h3>
+          <p>Do not call the quadrant chart a state scorecard. Do not call gallons per 1,000 VMT vehicle MPG. Do not interpret the FHWA/EIA CO₂ ratio as a literal highway share when it exceeds 100%. Treat 2024 highway-fuel changes cautiously.</p>
+        </div>
+      </div>
+      <div class="plain-note"><strong>Presentation order:</strong> Start with road travel, fuel intensity, and fuel use per resident. Use vehicle mix only as supporting context. Then move to transportation emissions to connect the road analysis to the broader sector. Everything else is a diagnostic or caveat, not a separate branch of the story.</div>
+    </section>
+
+    <footer>
+      <p><strong>Created by Pouyan Hatami.</strong></p>
+      <p>Working research dashboard using FHWA, EIA, and EPA data. Dataset links and methodological cautions are provided above for review and citation.</p>
+    </footer>
   </main>
-  <script>
-  (async()=>{
-    try{
-      const r=await fetch("data/site-full.b64",{cache:"no-store"});
-      if(!r.ok)throw new Error("Dashboard bundle could not load");
-      const enc=(await r.text()).trim();
-      const bin=atob(enc);
-      const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
-      const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
-      const page=await new Response(stream).text();
-      document.open();
-      document.write(page);
-      document.close();
-    }catch(e){
-      document.body.innerHTML='<main style="font-family:system-ui,sans-serif;max-width:800px;margin:80px auto;padding:0 20px"><h1>Dashboard could not load</h1><p>'+e.message+'</p></main>';
-    }
-  })();
-  </script>
+
+  <script>const DASH={
+  data:null,
+  level3:null,
+  vehicleMix:null,
+  selectedStates:["California","Texas","New York"],
+  maxStates:6,
+  metrics:{
+    vmt_per_capita:{label:"Road travel per resident (miles)",short:"Miles per resident",unit:"miles per resident",note:"FHWA road VMT divided by resident population. This measures road travel relative to population, not literal miles driven by the average resident."},
+    fuel_per_1000_vmt:{label:"Highway fuel per 1,000 VMT (gallons)",short:"Gallons per 1,000 VMT",unit:"gallons per 1,000 VMT",note:"FHWA highway fuel divided by FHWA public-road VMT. This is a system-level fuel-intensity measure, not passenger-vehicle MPG."},
+    fuel_per_capita:{label:"Highway fuel per resident (gallons)",short:"Gallons per resident",unit:"gallons per resident",note:"This combines the amount of road travel with the amount of reported highway fuel used per mile."},
+    gasoline_consistency_pct:{label:"FHWA highway gasoline / EIA transport gasoline (%)",short:"Gasoline consistency (%)",unit:"percent",note:"A reconciliation check between FHWA highway gasoline and EIA transportation motor gasoline. It is not a literal highway share."}
+  },
+  emissionMetrics:{
+    p:{label:"EIA transportation CO₂ per resident",short:"Metric tons CO₂ / resident",unit:"metric tons CO₂ per resident",decimals:2},
+    e:{label:"EIA transportation CO₂ total",short:"Million metric tons CO₂",unit:"million metric tons CO₂",decimals:2},
+    q:{label:"FHWA on-road CO₂ proxy per resident",short:"Metric tons CO₂ / resident",unit:"metric tons CO₂ per resident",decimals:2},
+    r:{label:"FHWA on-road proxy / EIA transportation CO₂",short:"On-road proxy / EIA total (%)",unit:"percent",decimals:1}
+  },
+  mixMetrics:{
+    l:{label:"Light-truck share of VMT",unit:"percent of VMT"},
+    h:{label:"Heavy-truck share of VMT",unit:"percent of VMT"},
+    t:{label:"Light + heavy truck share of VMT",unit:"percent of VMT"}
+  }
+};
+const $=id=>document.getElementById(id);
+const recordsForState=s=>DASH.data.records.filter(r=>r.state===s).sort((a,b)=>a.year-b.year);
+const nationalForYear=y=>DASH.data.national.find(r=>r.year===y);
+const currentStatesAt=y=>DASH.data.records.filter(r=>r.year===y);
+
+function populateStatePicker(){
+  const p=$("statePicker");
+  const states=[...new Set(DASH.data.records.map(r=>r.state))].sort();
+  p.innerHTML=states.map(x=>`<option value="${x}">${x}</option>`).join("");
+  p.value="California";
+}
+function renderChips(){
+  const e=$("stateChips");e.innerHTML="";
+  DASH.selectedStates.forEach(s=>{
+    const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=`${s} ×`;
+    b.addEventListener("click",()=>{DASH.selectedStates=DASH.selectedStates.filter(x=>x!==s);if(!DASH.selectedStates.length)DASH.selectedStates=["California"];renderAllComparison()});
+    e.appendChild(b);
+  });
+}
+function addState(s){
+  if(!s||DASH.selectedStates.includes(s))return;
+  if(DASH.selectedStates.length>=DASH.maxStates){alert("Choose up to 6 states at a time.");return;}
+  DASH.selectedStates.push(s);renderAllComparison();
+}
+function renderStats(){
+  const a=nationalForYear(2000),b=nationalForYear(2024);
+  const vc=(b.vmt_per_capita/a.vmt_per_capita-1)*100,ic=(b.fuel_per_1000_vmt/a.fuel_per_1000_vmt-1)*100;
+  $("nationalStats").innerHTML=`<div class="stat"><div class="value">${Math.round(b.vmt_per_capita).toLocaleString()}</div><div class="label">miles of road travel per resident, 2024</div></div><div class="stat"><div class="value">${b.fuel_per_1000_vmt.toFixed(1)}</div><div class="label">highway fuel gallons per 1,000 VMT, 2024</div></div><div class="stat"><div class="value">${vc.toFixed(1)}%</div><div class="label">change in VMT per resident, 2000–2024</div></div><div class="stat"><div class="value">${ic.toFixed(1)}%</div><div class="label">change in fuel intensity, 2000–2024</div></div>`;
+}
+function renderGasolineNational(){
+  const r=DASH.data.national;
+  Plotly.react("gasolineNationalChart",[{x:r.map(x=>x.year),y:r.map(x=>x.gasoline_consistency_pct),type:"scatter",mode:"lines+markers",name:"National ratio",hovertemplate:"%{x}<br>%{y:.1f}%<extra></extra>"}],{margin:{l:68,r:20,t:20,b:55},xaxis:{title:"Year",dtick:4},yaxis:{title:"FHWA highway gasoline / EIA transport gasoline (%)"},shapes:[{type:"line",x0:2000,x1:2024,y0:100,y1:100,line:{dash:"dash",width:1,color:"#778791"}}],paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});
+}
+function renderTrend(){
+  const k=$("trendMetric").value,m=DASH.metrics[k];
+  const traces=DASH.selectedStates.map(s=>{const r=recordsForState(s);return{x:r.map(x=>x.year),y:r.map(x=>x[k]),type:"scatter",mode:"lines+markers",name:s}});
+  if($("showNational").checked)traces.push({x:DASH.data.national.map(r=>r.year),y:DASH.data.national.map(r=>r[k]),type:"scatter",mode:"lines",name:"U.S. benchmark",line:{width:4,dash:"dot"}});
+  Plotly.react("trendChart",traces,{margin:{l:72,r:20,t:24,b:60},xaxis:{title:"Year",dtick:4},yaxis:{title:m.unit,automargin:true},legend:{orientation:"h",y:-.2},hovermode:"x unified",paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});
+  $("trendExplanation").textContent=m.note;
+}
+function formatRankValue(v,k){
+  if(k==="vmt_per_capita"||k==="fuel_per_capita")return Math.round(v).toLocaleString();
+  if(k==="fuel_per_1000_vmt")return v.toFixed(1);
+  if(k==="gasoline_consistency_pct")return v.toFixed(1)+"%";
+  return Number(v).toLocaleString();
+}
+function renderRanking(y,k,m,r){
+  const ranked=[...r].filter(x=>Number.isFinite(x[k])).sort((a,b)=>b[k]-a[k]);
+  const display=[...ranked].reverse();
+  const labels=display.map(x=>`${ranked.findIndex(z=>z.state===x.state)+1}. ${x.state}`);
+  Plotly.react("rankingChart",[{type:"bar",orientation:"h",x:display.map(x=>x[k]),y:labels,text:display.map(x=>formatRankValue(x[k],k)),textposition:"outside",cliponaxis:false,customdata:display.map(x=>[x.state,x.abbr,ranked.findIndex(z=>z.state===x.state)+1]),hovertemplate:`<b>%{customdata[2]}. %{customdata[0]}</b><br>${m.label}: %{x:,.2f}<extra></extra>`,marker:{color:"#6f8997"}}],{margin:{l:130,r:65,t:10,b:55},xaxis:{title:m.unit,automargin:true,zeroline:false},yaxis:{automargin:true,tickfont:{size:11}},bargap:.24,paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});
+  const p=$("rankingChart");p.removeAllListeners?.("plotly_click");p.on("plotly_click",e=>{const s=e.points?.[0]?.customdata?.[0];if(s)addState(s)});
+}
+function renderMap(){
+  const y=+$("mapYear").value,k=$("mapMetric").value,m=DASH.metrics[k],r=currentStatesAt(y);$("mapYearLabel").textContent=y;
+  Plotly.react("mapChart",[{type:"choropleth",locationmode:"USA-states",locations:r.map(x=>x.abbr),z:r.map(x=>x[k]),text:r.map(x=>x.state),customdata:r.map(x=>[x.state,x[k]]),hovertemplate:`<b>%{customdata[0]}</b><br>${m.label}: %{customdata[1]:.2f}<extra></extra>`,colorbar:{title:m.short}}],{geo:{scope:"usa",bgcolor:"#fff"},margin:{l:0,r:0,t:8,b:0},paper_bgcolor:"#fff"},{responsive:true,displaylogo:false});
+  renderRanking(y,k,m,r);$("mapFootnote").textContent=m.note;
+  const p=$("mapChart");p.removeAllListeners?.("plotly_click");p.on("plotly_click",e=>{const a=e.points?.[0]?.location;const rec=r.find(x=>x.abbr===a);if(rec)addState(rec.state)});
+}
+function renderScatter(){
+  const y=+$("scatterYear").value,r=currentStatesAt(y),n=nationalForYear(y);$("scatterYearLabel").textContent=y;
+  Plotly.react("scatterChart",[{type:"scatter",mode:"markers",x:r.map(x=>x.vmt_per_capita),y:r.map(x=>x.fuel_per_1000_vmt),text:r.map(x=>x.state),customdata:r.map(x=>[x.state]),marker:{size:r.map(x=>DASH.selectedStates.includes(x.state)?13:9),color:r.map(x=>DASH.selectedStates.includes(x.state)?"#245b78":"#8aa2af"),opacity:.85,line:{width:1,color:"#fff"}},hovertemplate:"<b>%{text}</b><br>VMT per resident: %{x:,.0f}<br>Fuel per 1,000 VMT: %{y:.1f} gallons<extra></extra>"}],{margin:{l:82,r:20,t:24,b:70},xaxis:{title:"Road VMT (miles per resident)"},yaxis:{title:"Highway fuel (gallons per 1,000 VMT)"},shapes:[{type:"line",x0:n.vmt_per_capita,x1:n.vmt_per_capita,y0:0,y1:1,yref:"paper",line:{color:"#6e7d87",dash:"dash",width:1}},{type:"line",y0:n.fuel_per_1000_vmt,y1:n.fuel_per_1000_vmt,x0:0,x1:1,xref:"paper",line:{color:"#6e7d87",dash:"dash",width:1}}],paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});
+  const p=$("scatterChart");p.removeAllListeners?.("plotly_click");p.on("plotly_click",e=>{const s=e.points?.[0]?.customdata?.[0];if(s)addState(s)});
+}
+function renderVehicleMix(){
+  const k=$("mixMetric").value,m=DASH.mixMetrics[k],r=DASH.vehicleMix.rows;
+  Plotly.react("vehicleMixChart",[{type:"scatter",mode:"markers",x:r.map(x=>x[k]),y:r.map(x=>x.f),text:r.map(x=>x.s),customdata:r.map(x=>[x.s]),marker:{size:r.map(x=>DASH.selectedStates.includes(x.s)?13:9),color:r.map(x=>DASH.selectedStates.includes(x.s)?"#245b78":"#8aa2af"),opacity:.85,line:{width:1,color:"#fff"}},hovertemplate:`<b>%{text}</b><br>${m.label}: %{x:.1f}%<br>Fuel intensity: %{y:.1f} gallons/1,000 VMT<extra></extra>`}],{margin:{l:82,r:20,t:24,b:70},xaxis:{title:`${m.label} (%)`},yaxis:{title:"Highway fuel (gallons per 1,000 VMT)"},paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});
+  const p=$("vehicleMixChart");p.removeAllListeners?.("plotly_click");p.on("plotly_click",e=>{const s=e.points?.[0]?.customdata?.[0];if(s)addState(s)});
+}
+function renderEmissionsStats(){
+  const n0=DASH.level3.national.find(x=>x.y===2000),n7=DASH.level3.national.find(x=>x.y===2007),n24=DASH.level3.national.find(x=>x.y===2024);
+  const pcChange=(n24.p/n0.p-1)*100,peakChange=(n24.e/n7.e-1)*100;
+  $("emissionsStats").innerHTML=`<div class="stat"><div class="value">${n24.e.toLocaleString(undefined,{maximumFractionDigits:1})}</div><div class="label">million metric tons EIA transportation CO₂, 2024</div></div><div class="stat"><div class="value">${n24.p.toFixed(2)}</div><div class="label">metric tons transportation CO₂ per resident, 2024</div></div><div class="stat"><div class="value">${pcChange.toFixed(1)}%</div><div class="label">change in transportation CO₂ per resident, 2000–2024</div></div><div class="stat"><div class="value">${peakChange.toFixed(1)}%</div><div class="label">change in total transportation CO₂ from 2007 peak to 2024</div></div>`;
+}
+function renderEmissionsNational(){
+  const r=DASH.level3.national;
+  Plotly.react("emissionsNationalChart",[
+    {x:r.map(x=>x.y),y:r.map(x=>x.e),type:"scatter",mode:"lines+markers",name:"EIA transportation CO₂"},
+    {x:r.map(x=>x.y),y:r.map(x=>x.o),type:"scatter",mode:"lines+markers",name:"FHWA on-road CO₂ proxy"}
+  ],{margin:{l:76,r:20,t:24,b:60},xaxis:{title:"Year",dtick:4},yaxis:{title:"Million metric tons CO₂"},legend:{orientation:"h",y:-.18},hovermode:"x unified",paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});
+}
+function formatEmission(v,k){
+  if(k==="r")return v.toFixed(1)+"%";
+  if(k==="e")return v.toLocaleString(undefined,{maximumFractionDigits:1});
+  return v.toFixed(2);
+}
+function renderEmissionsState(){
+  const y=+$("emissionsYear").value,k=$("emissionsMetric").value,m=DASH.emissionMetrics[k];
+  const r=DASH.level3.states.filter(x=>x.y===y);
+  Plotly.react("emissionsMap",[{type:"choropleth",locationmode:"USA-states",locations:r.map(x=>x.a),z:r.map(x=>x[k]),text:r.map(x=>x.s),customdata:r.map(x=>[x.s,x[k]]),hovertemplate:`<b>%{customdata[0]}</b><br>${m.label}: %{customdata[1]:.2f}<extra></extra>`,colorbar:{title:m.short}}],{geo:{scope:"usa",bgcolor:"#fff"},margin:{l:0,r:0,t:8,b:0},paper_bgcolor:"#fff"},{responsive:true,displaylogo:false});
+  const ranked=[...r].sort((a,b)=>b[k]-a[k]),display=[...ranked].reverse();
+  const labels=display.map(x=>`${ranked.findIndex(z=>z.s===x.s)+1}. ${x.s}`);
+  Plotly.react("emissionsRanking",[{type:"bar",orientation:"h",x:display.map(x=>x[k]),y:labels,text:display.map(x=>formatEmission(x[k],k)),textposition:"outside",cliponaxis:false,customdata:display.map(x=>[x.s,ranked.findIndex(z=>z.s===x.s)+1]),hovertemplate:`<b>%{customdata[1]}. %{customdata[0]}</b><br>${m.label}: %{x:,.2f}<extra></extra>`,marker:{color:"#6f8997"}}],{margin:{l:130,r:70,t:10,b:55},xaxis:{title:m.unit,automargin:true,zeroline:false},yaxis:{automargin:true,tickfont:{size:11}},bargap:.24,paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});
+}
+function renderAllComparison(){renderChips();renderTrend();renderScatter();renderVehicleMix();}
+function wireControls(){
+  $("addStateBtn").addEventListener("click",()=>addState($("statePicker").value));
+  $("trendMetric").addEventListener("change",renderTrend);$("showNational").addEventListener("change",renderTrend);
+  $("mapMetric").addEventListener("change",renderMap);$("mapYear").addEventListener("input",renderMap);
+  $("scatterYear").addEventListener("input",renderScatter);$("mixMetric").addEventListener("change",renderVehicleMix);
+  $("emissionsYear").addEventListener("change",renderEmissionsState);$("emissionsMetric").addEventListener("change",renderEmissionsState);
+}
+async function loadCoreData(){
+  const u=["data/dashboard-part1.b64","data/dashboard-part2.b64","data/dashboard-part3.b64","data/dashboard-part4.b64"];
+  const rs=await Promise.all(u.map(x=>fetch(x)));if(rs.some(r=>!r.ok))throw new Error("Core dashboard data request failed");
+  const enc=(await Promise.all(rs.map(r=>r.text()))).join("").trim();
+  const bin=atob(enc),bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
+  const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
+  const raw=JSON.parse(await new Response(stream).text());
+  return {records:raw.rows.map(row=>{const[state,abbr]=raw.states[row[0]];return{state,abbr,year:2000+row[1],vmt_per_capita:row[2],fuel_per_1000_vmt:row[3],fuel_per_capita:row[4],gasoline_consistency_pct:row[5]}}),national:raw.national.map(row=>({year:2000+row[0],vmt_per_capita:row[1],fuel_per_1000_vmt:row[2],fuel_per_capita:row[3],gasoline_consistency_pct:row[4]}))};
+}
+async function init(){
+  try{
+    const [core,l3,mix]=await Promise.all([loadCoreData(),fetch("data/level3-summary.json").then(r=>{if(!r.ok)throw new Error("Transportation emissions data request failed");return r.json()}),fetch("data/vehicle-mix-2023.json").then(r=>{if(!r.ok)throw new Error("Vehicle-mix data request failed");return r.json()})]);
+    DASH.data=core;DASH.level3=l3;DASH.vehicleMix=mix;
+    populateStatePicker();wireControls();renderStats();renderChips();renderTrend();renderMap();renderScatter();renderVehicleMix();renderEmissionsStats();renderEmissionsNational();renderEmissionsState();
+  }catch(e){document.body.innerHTML=`<main class="wrap"><h1>Dashboard data could not load</h1><p>${e.message}</p></main>`;}
+}
+init();
+</script>
 </body>
 </html>
