@@ -1,1 +1,32 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>U.S. Transportation Emissions Explorer</title></head><body><main style="font-family:system-ui,sans-serif;max-width:800px;margin:80px auto;padding:0 20px"><h1>U.S. Transportation Emissions Explorer</h1><p>Loading research dashboard…</p></main><script>(async()=>{try{const r=await fetch("data/site-full.gz");if(!r.ok)throw new Error("Site bundle could not load");const s=r.body.pipeThrough(new DecompressionStream("gzip")),h=await new Response(s).text();document.open();document.write(h);document.close()}catch(e){document.body.innerHTML="<main><h1>Dashboard could not load</h1><p>"+e.message+"</p></main>"}})();</script></body></html>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>U.S. Transportation Emissions Explorer</title>
+</head>
+<body>
+  <main style="font-family:system-ui,sans-serif;max-width:800px;margin:80px auto;padding:0 20px">
+    <h1>U.S. Transportation Emissions Explorer</h1>
+    <p>Loading research dashboard…</p>
+  </main>
+  <script>
+  (async()=>{
+    try{
+      const r=await fetch("data/site-full.b64",{cache:"no-store"});
+      if(!r.ok)throw new Error("Dashboard bundle could not load");
+      const enc=(await r.text()).trim();
+      const bin=atob(enc);
+      const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
+      const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
+      const page=await new Response(stream).text();
+      document.open();
+      document.write(page);
+      document.close();
+    }catch(e){
+      document.body.innerHTML='<main style="font-family:system-ui,sans-serif;max-width:800px;margin:80px auto;padding:0 20px"><h1>Dashboard could not load</h1><p>'+e.message+'</p></main>';
+    }
+  })();
+  </script>
+</body>
+</html>
