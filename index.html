@@ -223,6 +223,11 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
       </div>
       <div class="stat-grid emissions-stats" id="emissionsStats"></div>
       <div id="emissionsNationalChart" class="chart chart-lg" aria-label="National transportation CO2 trend"></div>
+      <div class="subheading">
+        <h3>On-road proxy relative to total transportation CO₂</h3>
+        <p class="plain-note">This percentage is shown for every year from 2000 to 2024. It is the FHWA on-road CO₂ proxy divided by EIA total transportation-sector CO₂. It is a reconciliation ratio, not a literal highway modal share.</p>
+      </div>
+      <div id="emissionsShareChart" class="chart" aria-label="On-road CO2 proxy as a percentage of total transportation CO2 by year"></div>
 
       <div class="section-heading split subheading">
         <div><h3>State emissions comparison</h3><p>Use 2023 for the cleaner cross-state comparison; 2024 is provided as the latest observation.</p></div>
@@ -423,6 +428,9 @@ function renderEmissionsNational(){
     {x:r.map(x=>x.y),y:r.map(x=>x.e),type:"scatter",mode:"lines+markers",name:"EIA transportation CO₂"},
     {x:r.map(x=>x.y),y:r.map(x=>x.o),type:"scatter",mode:"lines+markers",name:"FHWA on-road CO₂ proxy"}
   ],{margin:{l:76,r:20,t:24,b:60},xaxis:{title:"Year",dtick:4},yaxis:{title:"Million metric tons CO₂"},legend:{orientation:"h",y:-.18},hovermode:"x unified",paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});
+  Plotly.react("emissionsShareChart",[
+    {x:r.map(x=>x.y),y:r.map(x=>x.r),type:"scatter",mode:"lines+markers",name:"On-road proxy / EIA transportation CO₂",hovertemplate:"<b>%{x}</b><br>On-road proxy relative to total: %{y:.1f}%<extra></extra>"}
+  ],{margin:{l:76,r:20,t:18,b:60},xaxis:{title:"Year",dtick:4},yaxis:{title:"Percent of EIA transportation CO₂",ticksuffix:"%"},hovermode:"x",paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});
 }
 function formatEmission(v,k){
   if(k==="r")return v.toFixed(1)+"%";
