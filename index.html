@@ -103,20 +103,20 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
       <div id="trendExplanation" class="plain-note"></div>
       <div class="formula-box">
         <div class="formula">VMT per resident × fuel intensity ÷ 1,000 = highway fuel per resident</div>
-        <div class="formula-note">The ÷1,000 is needed because fuel intensity is reported as gallons per 1,000 VMT. Example for the U.S. in 2023: about 9,642 miles per resident × 54.45 gallons per 1,000 VMT ÷ 1,000 ≈ 525 gallons per resident.</div>
+        <div class="formula-note">The ÷1,000 is needed because fuel intensity is reported as gallons per 1,000 VMT. Example for the U.S. in 2024: about 9,688 miles per resident × 51.90 gallons per 1,000 VMT ÷ 1,000 ≈ 503 gallons per resident.</div>
       </div>
       <div id="trendChart" class="chart chart-lg" aria-label="State trend comparison chart"></div>
 
       <div class="change-summary" aria-labelledby="change-summary-title">
         <h3 id="change-summary-title">Long-run change: national and state view</h3>
-        <p class="summary-note">For structural comparisons, this uses 2000 to 2023 rather than 2024 because of the FHWA 2024 comparability caution.</p>
+        <p class="summary-note">This uses the latest year, 2024. FHWA reports methodology and state-reporting changes in 2024, so the 2000–2024 fuel changes should be interpreted with that comparability caution in mind.</p>
         <div class="change-block">
-          <strong>United States, 2000–2023</strong>
+          <strong>United States, 2000–2024</strong>
           <div id="nationalChangeGrid" class="change-grid"></div>
         </div>
         <div class="change-block">
           <div class="change-block-head">
-            <strong id="stateChangeTitle">State, 2000–2023</strong>
+            <strong id="stateChangeTitle">State, 2000–2024</strong>
             <label>Choose state <select id="changeStatePicker"></select></label>
           </div>
           <div id="stateChangeGrid" class="change-grid"></div>
@@ -230,9 +230,9 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
       <div id="emissionsShareChart" class="chart" aria-label="On-road CO2 proxy as a percentage of total transportation CO2 by year"></div>
 
       <div class="section-heading split subheading">
-        <div><h3>State emissions comparison</h3><p>Use 2023 for the cleaner cross-state comparison; 2024 is provided as the latest observation.</p></div>
+        <div><h3>State emissions comparison</h3><p>2024 is selected by default as the latest observation. Use the year selector to compare every year from 2000 through 2024. The FHWA-based 2024 on-road proxy should still be read with the 2024 comparability caution.</p></div>
         <div class="controls compact-controls">
-          <label>Year <select id="emissionsYear"><option value="2023">2023</option><option value="2024" selected>2024</option></select></label>
+          <label>Year <select id="emissionsYear"><option value="2000">2000</option><option value="2001">2001</option><option value="2002">2002</option><option value="2003">2003</option><option value="2004">2004</option><option value="2005">2005</option><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option><option value="2023">2023</option><option value="2024" selected>2024</option></select></label>
           <label>Measure
             <select id="emissionsMetric">
               <option value="p">EIA transportation CO₂ per resident (metric tons)</option>
@@ -343,12 +343,12 @@ function changeCard(value,label){
   return `<div class="change-card"><div class="change-value">${sign}${value.toFixed(1)}%</div><div class="change-label">${label}</div></div>`;
 }
 function renderLongRunChanges(){
-  const n0=nationalForYear(2000),n23=nationalForYear(2023);
-  if(n0&&n23){
+  const n0=nationalForYear(2000),n24=nationalForYear(2024);
+  if(n0&&n24){
     $("nationalChangeGrid").innerHTML=[
-      changeCard(pctChange(n0.vmt_per_capita,n23.vmt_per_capita),"VMT per resident"),
-      changeCard(pctChange(n0.fuel_per_1000_vmt,n23.fuel_per_1000_vmt),"Highway fuel per 1,000 VMT"),
-      changeCard(pctChange(n0.fuel_per_capita,n23.fuel_per_capita),"Highway fuel per resident")
+      changeCard(pctChange(n0.vmt_per_capita,n24.vmt_per_capita),"VMT per resident"),
+      changeCard(pctChange(n0.fuel_per_1000_vmt,n24.fuel_per_1000_vmt),"Highway fuel per 1,000 VMT"),
+      changeCard(pctChange(n0.fuel_per_capita,n24.fuel_per_capita),"Highway fuel per resident")
     ].join("");
   }
   const picker=$("changeStatePicker");
@@ -359,8 +359,8 @@ function renderLongRunChanges(){
     picker.addEventListener("change",renderLongRunChanges);
   }
   const state=picker.value||"California";
-  const rows=recordsForState(state),a=rows.find(r=>r.year===2000),b=rows.find(r=>r.year===2023);
-  $("stateChangeTitle").textContent=`${state}, 2000–2023`;
+  const rows=recordsForState(state),a=rows.find(r=>r.year===2000),b=rows.find(r=>r.year===2024);
+  $("stateChangeTitle").textContent=`${state}, 2000–2024`;
   if(a&&b){
     $("stateChangeGrid").innerHTML=[
       changeCard(pctChange(a.vmt_per_capita,b.vmt_per_capita),"VMT per resident"),
@@ -457,10 +457,27 @@ async function loadCoreData(){
   const raw=CORE_RAW;
   return {records:raw.rows.map(row=>{const[state,abbr]=raw.states[row[0]];return{state,abbr,year:2000+row[1],vmt_per_capita:row[2],fuel_per_1000_vmt:row[3],fuel_per_capita:row[4],gasoline_consistency_pct:row[5]}}),national:raw.national.map(row=>({year:2000+row[0],vmt_per_capita:row[1],fuel_per_1000_vmt:row[2],fuel_per_capita:row[3],gasoline_consistency_pct:row[4]}))};
 }
+async function loadFullEmissionsStates(){
+  try{
+    const resp=await fetch("data/emissions-state-2000-2024.b64",{cache:"no-store"});
+    if(!resp.ok)throw new Error("State emissions data file could not load.");
+    const b64=(await resp.text()).trim();
+    const bytes=Uint8Array.from(atob(b64),ch=>ch.charCodeAt(0));
+    const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
+    const raw=await new Response(stream).json();
+    return raw.rows.map(row=>{
+      const [s,a]=raw.states[row[0]];
+      return {s,a,y:2000+row[1],e:row[2],p:row[3],q:row[4],r:row[5]};
+    });
+  }catch(err){
+    console.warn("Falling back to embedded 2023-2024 emissions state data.",err);
+    return L3_DATA.states;
+  }
+}
 async function init(){
   try{
-    const core=await loadCoreData();
-    DASH.data=core;DASH.level3=L3_DATA;DASH.vehicleMix=MIX_DATA;
+    const [core,fullEmissionStates]=await Promise.all([loadCoreData(),loadFullEmissionsStates()]);
+    DASH.data=core;DASH.level3={national:L3_DATA.national,states:fullEmissionStates};DASH.vehicleMix=MIX_DATA;
     populateStatePicker();wireControls();renderStats();
   renderLongRunChanges();renderChips();renderTrend();renderMap();renderScatter();renderVehicleMix();renderEmissionsStats();renderEmissionsNational();renderEmissionsState();
   }catch(e){document.body.innerHTML=`<main class="wrap"><h1>Dashboard data could not load</h1><p>${e.message}</p></main>`;}
