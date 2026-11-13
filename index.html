@@ -13,7 +13,7 @@ a{color:#195a7c;text-decoration-thickness:1px;text-underline-offset:2px}.wrap{wi
 .site-header{padding:56px 0 42px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#f8fbfc 0%,#fff 100%)}
 .eyebrow{font-size:.78rem;font-weight:750;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
 h1{font-size:clamp(2.2rem,5vw,4rem);line-height:1.02;letter-spacing:-.035em;margin:0;max-width:940px}
-h2{font-size:clamp(1.55rem,3vw,2.25rem);line-height:1.12;letter-spacing:-.02em;margin:0 0 8px}h3{margin:0 0 6px}
+h2{font-size:clamp(1.55rem,3vw,2.25rem);line-height:1.12;letter-spacing:-.02em;margin:0 0 8px}h3{margin:0 0 6px}.subsection-title{font-size:1.35rem;line-height:1.2;letter-spacing:-.01em;margin:6px 0 10px;color:#24313a}
 .lede{font-size:1.15rem;color:var(--muted);max-width:820px;margin:18px 0 0}.byline{margin-top:22px;font-size:1rem;color:#43515c}.byline a{font-weight:800;color:var(--ink);text-decoration:none;border-bottom:1px solid #9fb2bd;padding-bottom:1px}.byline a:hover{color:var(--accent);border-bottom-color:var(--accent)}
 .section-nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(8px)}.nav-inner{display:flex;gap:20px;overflow-x:auto;padding-top:10px;padding-bottom:10px}.nav-inner a{white-space:nowrap;font-size:.84rem;font-weight:700;color:#43515c;text-decoration:none}.nav-inner a:hover{color:var(--accent)}
 .intro-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:32px;padding:44px 0 8px}.intro-grid p{max-width:780px}.caution{padding:12px 14px;background:var(--warn-soft);border-left:4px solid #d9a33a;border-radius:6px;color:#5f471d}
@@ -49,11 +49,11 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
 
   <nav class="section-nav" aria-label="Page sections">
     <div class="wrap nav-inner">
-      <a href="#walkthrough">Project logic</a>
-      <a href="#level2">Road travel &amp; fuel</a>
-      <a href="#vehicle-mix">Vehicle mix</a>
-      <a href="#level3">Transportation emissions</a>
-      <a href="#methods">Data &amp; methods</a>
+      <a href="#walkthrough">1. Project logic</a>
+      <a href="#level2">2. Road travel &amp; fuel</a>
+      <a href="#vehicle-mix">3. Vehicle mix</a>
+      <a href="#level3">4. Transportation emissions</a>
+      <a href="#methods">5. Data &amp; methods</a>
     </div>
   </nav>
 
@@ -70,8 +70,9 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
     </section>
 
     <section class="panel" id="walkthrough" aria-labelledby="walkthrough-title">
-      <p class="eyebrow">Project logic</p>
-      <h2 id="walkthrough-title">The analysis in three steps</h2>
+      <p class="eyebrow">Section 1</p>
+      <h2 id="walkthrough-title">1. Project logic</h2>
+      <h3 class="subsection-title">The analysis in three steps</h3>
       <div class="walkthrough-grid">
         <article><div class="step-no">1</div><h3>Separate travel from fuel intensity</h3><p>Use VMT per resident to measure how much road travel occurs. <strong>Fuel intensity</strong> is highway fuel use per 1,000 VMT: how many gallons of reported highway fuel are used for a given amount of road travel. We use fuel intensity rather than MPG because MPG is a vehicle-level efficiency measure, while this analysis compares statewide total highway fuel with statewide total VMT across all vehicle types and travel conditions.</p></article>
         <article><div class="step-no">2</div><h3>Use vehicle mix as context</h3><p>Combine VM-4 vehicle percentages with VM-2 road VMT to estimate statewide light-truck and heavy-truck shares. Vehicle mix explains some, but not most, of the differences in fuel intensity.</p></article>
@@ -81,8 +82,9 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
 
     <section class="panel" id="level2" aria-labelledby="compare-title">
       <div class="section-heading">
-        <p class="eyebrow">Road travel and highway fuel | Road travel and highway fuel</p>
-        <h2 id="compare-title">How have states changed over time?</h2>
+        <p class="eyebrow">Section 2</p>
+        <h2 id="compare-title">2. Road travel and highway fuel</h2>
+        <h3 class="subsection-title">2.1 How have states changed over time?</h3>
         <p>Road travel comes from FHWA <a href="https://datahub.transportation.gov/Roadways-and-Bridges/Vehicle-Miles-of-Travel-by-Functional-System-and-S/nps9-3pm2/about_data" target="_blank" rel="noopener">VM-2</a>. Highway fuel comes from FHWA <a href="https://data.transportation.gov/Roadways-and-Bridges/Motor-Fuel-Use-2000-2024-MF-21-/ef8t-7afc" target="_blank" rel="noopener">MF-21</a>, with MF-225/MF-226 used only for historical gaps in the project panel.</p>
       </div>
 
@@ -127,8 +129,8 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
     <section class="panel" aria-labelledby="map-title">
       <div class="section-heading split">
         <div>
-          <p class="eyebrow">State comparison</p>
-          <h2 id="map-title">Map and state ranking</h2>
+          <p class="eyebrow">Section 2 · State comparison</p>
+          <h3 id="map-title" class="subsection-title">2.2 Map and state ranking</h3>
           <p>The line chart above and this map/ranking use the same underlying measures, but they answer different questions: the line chart shows how selected states change over time, while the map and ranking show where all states stand in one selected year.</p>
         </div>
         <div class="year-control">
@@ -155,8 +157,8 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
     <section class="panel" aria-labelledby="drivers-title">
       <div class="section-heading split">
         <div>
-          <p class="eyebrow">Travel and fuel intensity</p>
-          <h2 id="drivers-title">Road travel and fuel use per mile</h2>
+          <p class="eyebrow">Section 2 · Travel and fuel intensity</p>
+          <h3 id="drivers-title" class="subsection-title">2.3 Road travel and fuel use per mile</h3>
           <p><strong>Fuel intensity</strong> here means gallons of reported highway fuel used per 1,000 vehicle miles traveled (VMT). We use this term instead of MPG because MPG describes vehicle-level efficiency, while this measure combines statewide fuel use and statewide travel across cars, light trucks, heavy trucks, and different driving conditions. Higher values mean more fuel is used for the same amount of road travel at the state-system level.</p>
           <p>Each point is a state. The reference lines are the national values for that year. The quadrants are descriptive, not grades. Click a dot to pin its state label; click it again to unpin it.</p>
         </div>
@@ -180,8 +182,8 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
 
     <section class="panel" id="level2-findings" aria-labelledby="level2-findings-title">
       <div class="section-heading">
-        <p class="eyebrow">Road travel and highway fuel | Main findings</p>
-        <h2 id="level2-findings-title">What the road-travel and fuel results show</h2>
+        <p class="eyebrow">Section 2 · Main findings</p>
+        <h3 id="level2-findings-title" class="subsection-title">2.4 What the road-travel and fuel results show</h3>
       </div>
       <div class="takeaway-box">
         <h3>Nationally, lower fuel use per resident is mostly a fuel-intensity story, not a sustained decline in travel.</h3>
@@ -195,8 +197,9 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
 
     <section class="panel" id="vehicle-mix" aria-labelledby="mix-title">
       <div class="section-heading">
-        <p class="eyebrow">Supporting Road travel and highway fuel analysis | Vehicle mix</p>
-        <h2 id="mix-title">Do pickups, SUVs, and heavy trucks explain fuel intensity?</h2>
+        <p class="eyebrow">Section 3</p>
+        <h2 id="mix-title">3. Vehicle mix</h2>
+        <h3 class="subsection-title">Do light trucks and heavy trucks explain fuel intensity?</h3>
         <p>FHWA <a href="https://www.fhwa.dot.gov/policyinformation/statistics/2024/vm4.cfm" target="_blank" rel="noopener">VM-4</a> gives the vehicle mix within Interstate, Other Arterials, and Other roads, separately for rural and urban travel. We weight those percentages by actual road VMT from <a href="https://www.fhwa.dot.gov/policyinformation/statistics/2024/vm2.cfm" target="_blank" rel="noopener">VM-2</a> to estimate statewide vehicle shares.</p>
         <p>In 2023, the combined light- and heavy-truck share had a moderate relationship with gallons per 1,000 VMT (correlation about 0.45). Light- and heavy-truck shares together explained about 22% of the cross-state variation. Vehicle mix matters, but it is not the whole explanation.</p>
       </div>
@@ -215,8 +218,9 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
 
     <section class="panel" id="level3" aria-labelledby="level3-title">
       <div class="section-heading">
-        <p class="eyebrow">Transportation emissions | Transportation CO₂</p>
-        <h2 id="level3-title">How does highway fuel use fit into total transportation emissions?</h2>
+        <p class="eyebrow">Section 4</p>
+        <h2 id="level3-title">4. Transportation emissions</h2>
+        <h3 class="subsection-title">How does highway fuel use fit into total transportation emissions?</h3>
         <p>EIA SEDS <a href="https://www.eia.gov/environment/emissions/state/" target="_blank" rel="noopener">transportation-sector CO₂</a> includes the broader transportation system. We compare it with an on-road proxy derived from FHWA MF-21 highway gasoline and special fuel. Gasoline is converted using 8,887 g CO₂/gallon and special fuel using 10,180 g CO₂/gallon as a diesel proxy, following the <a href="https://www.epa.gov/energy/greenhouse-gas-equivalencies-calculator-calculations-and-references" target="_blank" rel="noopener">EPA factors used in this project</a>.</p>
         <p>The FHWA result is an approximation, not an inventory. FHWA “special fuel” is not pure diesel, and the historical project series uses private/commercial highway special fuel for consistency. The ratio to EIA transportation CO₂ is therefore a reconciliation measure, not a literal emissions share.</p>
         <p><strong>Percentage comparison:</strong> the on-road proxy divided by EIA total transportation CO₂ shows how large the highway-fuel-based estimate is relative to the broader transportation total. For example, 87.8% means the proxy is equivalent to about 88% of EIA transportation CO₂. The remaining percentage should not be interpreted as an exact non-road share because the two series have different scopes and accounting methods.</p>
@@ -230,7 +234,7 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
       <div id="emissionsShareChart" class="chart" aria-label="On-road CO2 proxy as a percentage of total transportation CO2 by year"></div>
 
       <div class="section-heading split subheading">
-        <div><h3>State emissions comparison</h3><p>2024 is selected by default as the latest observation. Use the year selector to compare every year from 2000 through 2024. The FHWA-based 2024 on-road proxy should still be read with the 2024 comparability caution.</p></div>
+        <div><h3>4.1 State emissions comparison</h3><p>2024 is selected by default as the latest observation. Use the year selector to compare every year from 2000 through 2024. The FHWA-based 2024 on-road proxy should still be read with the 2024 comparability caution.</p></div>
         <div class="controls compact-controls">
           <label>Year <select id="emissionsYear"><option value="2000">2000</option><option value="2001">2001</option><option value="2002">2002</option><option value="2003">2003</option><option value="2004">2004</option><option value="2005">2005</option><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option><option value="2023">2023</option><option value="2024" selected>2024</option></select></label>
           <label>Measure
@@ -255,8 +259,9 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
     </section>
 
     <section class="panel methodology" id="methods" aria-labelledby="method-title">
-      <p class="eyebrow">Data and methods</p>
-      <h2 id="method-title">Datasets used in the project</h2>
+      <p class="eyebrow">Section 5</p>
+      <h2 id="method-title">5. Data and methods</h2>
+      <h3 class="subsection-title">Datasets used in the project</h3>
       <p class="method-intro">The table below is the audit trail. Each dataset has a specific job in the analysis.</p>
       <div class="table-wrap">
         <table class="source-table">
