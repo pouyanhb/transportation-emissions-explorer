@@ -66,7 +66,7 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
         <p class="eyebrow">Project overview</p>
         <h2 id="headline-findings">What the analysis is trying to explain</h2>
         <p>The project focuses on two questions: why highway fuel use differs across states, and how road transportation fits into total transportation CO₂ emissions.</p>
-        <p>In 2024, road travel per resident was close to its 2000 level, while reported highway fuel use per 1,000 vehicle miles was lower. That points to lower fuel use per mile, rather than a sustained decline in travel, as the larger long-run contributor to lower highway fuel use per resident.</p>
+        <p>In 2024, road VMT per resident was close to its 2000 level, while reported highway fuel use per 1,000 vehicle miles was lower. That points to lower fuel use per mile, rather than a sustained decline in travel, as the larger long-run contributor to lower highway fuel use per resident.</p>
         <p class="caution"><strong>2024 fuel note:</strong> <a href="https://www.fhwa.dot.gov/policyinformation/statistics/2024/mf21.cfm" target="_blank" rel="noopener">FHWA's 2024 MF-21 documentation</a> notes that some 2024 estimates may not be comparable with prior years because of revised nonhighway estimation procedures and, for some states, changes in data analysis or reporting procedures. We use 2024 throughout the dashboard as the latest observation, but interpret changes involving 2024 cautiously.</p>
       </div>
       <div class="stat-grid" id="nationalStats" aria-live="polite"></div>
@@ -77,7 +77,7 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
       <h2 id="walkthrough-title">1. Project logic</h2>
       <h3 class="subsection-title">The analysis in three steps</h3>
       <div class="walkthrough-grid">
-        <article><div class="step-no">1</div><h3>Separate travel from fuel intensity</h3><p>Use VMT per resident to measure how much road travel occurs. <strong>Fuel intensity</strong> is highway fuel use per 1,000 VMT: how many gallons of reported highway fuel are used for a given amount of road travel. We use fuel intensity rather than MPG because MPG is a vehicle-level efficiency measure, while this analysis compares statewide total highway fuel with statewide total VMT across all vehicle types and travel conditions.</p></article>
+        <article><div class="step-no">1</div><h3>Separate travel from fuel intensity</h3><p>Use road VMT per resident to measure the amount of road travel occurring in a state relative to its population. <strong>Fuel intensity</strong> is highway fuel use per 1,000 VMT: how many gallons of reported highway fuel are used for a given amount of road travel. We use fuel intensity rather than MPG because MPG is a vehicle-level efficiency measure, while this analysis compares statewide total highway fuel with statewide total VMT across all vehicle types and travel conditions.</p></article>
         <article><div class="step-no">2</div><h3>Use vehicle mix as context</h3><p>Combine VM-4 vehicle percentages with VM-2 road VMT to estimate statewide light-truck and heavy-truck shares. Vehicle mix explains some, but not most, of the differences in fuel intensity.</p></article>
         <article><div class="step-no">3</div><h3>Connect roads to transportation CO₂</h3><p>Convert FHWA highway fuel to an on-road CO₂ proxy and compare it with EIA's broader transportation-sector CO₂ estimate.</p></article>
       </div>
@@ -94,7 +94,7 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
       <div class="controls controls-compare">
         <label>Measure
           <select id="trendMetric">
-            <option value="vmt_per_capita">Road travel per resident (miles)</option>
+            <option value="vmt_per_capita">Road VMT per resident (miles)</option>
             <option value="fuel_per_1000_vmt">Highway fuel per 1,000 VMT (gallons)</option>
             <option value="fuel_per_capita">Highway fuel per resident (gallons)</option>
           </select>
@@ -140,7 +140,7 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
       <div class="controls">
         <label>Map measure
           <select id="mapMetric">
-            <option value="vmt_per_capita">Road travel per resident (miles)</option>
+            <option value="vmt_per_capita">Road VMT per resident (miles)</option>
             <option value="fuel_per_1000_vmt">Highway fuel per 1,000 VMT (gallons)</option>
             <option value="fuel_per_capita">Highway fuel per resident (gallons)</option>
           </select>
@@ -186,8 +186,8 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
       </div>
       <div class="takeaway-box">
         <h3>Nationally, lower fuel use per resident is mostly a fuel-intensity story, not a sustained decline in travel.</h3>
-        <p>From 2000 to 2023, VMT per resident changed very little (about −1%), while highway fuel use per 1,000 VMT fell about 7.8%. Highway fuel use per resident fell about 8.7%. In other words, the long-run decline in fuel use per person came mainly from using less fuel for a given amount of road travel.</p>
-        <p>The sharp drop in 2020 was different: it was primarily a temporary travel shock. VMT per resident fell about 11.9% from 2019 to 2020 and then recovered substantially.</p>
+        <p>From 2000 to 2023, road VMT per resident changed very little (about −1%), while highway fuel use per 1,000 VMT fell about 7.8%. Highway fuel use per resident fell about 8.7%. In other words, the long-run decline in fuel use per person came mainly from using less fuel for a given amount of road travel.</p>
+        <p>The sharp drop in 2020 was different: it was primarily a temporary travel shock. road VMT per resident fell about 11.9% from 2019 to 2020 and then recovered substantially.</p>
         <p>State differences come from different combinations of travel and fuel intensity. Wyoming is a clear example of both high VMT and high fuel intensity. California is low on both measures. Indiana has high VMT but comparatively low fuel intensity, while Alaska has lower VMT but high fuel intensity. The quadrant chart is useful for identifying these different pathways; it is not a scorecard.</p>
         <p>Vehicle mix helps explain some of the fuel-intensity differences. States with larger light-truck and heavy-truck shares tend to use more fuel per 1,000 VMT, but the relationship is only partial. In 2023, light- and heavy-truck shares together explained about 22% of the cross-state variation in fuel intensity.</p>
         <p><strong>Bottom line:</strong> highway fuel use per resident is best understood as the result of two separate drivers: how much road travel occurs and how fuel-intensive that travel is. States differ in which of those drivers matters more, so one metric alone does not describe the full transportation picture.</p>
@@ -300,7 +300,7 @@ const DASH={
   scatterHighlights:[],
   maxStates:6,
   metrics:{
-    vmt_per_capita:{label:"Road travel per resident (miles)",short:"Miles per resident",unit:"miles per resident",note:"FHWA road VMT divided by resident population. This measures road travel relative to population, not literal miles driven by the average resident."},
+    vmt_per_capita:{label:"Road VMT per resident (miles)",short:"Road VMT per resident",unit:"miles per resident",note:"Total FHWA road VMT in the state divided by population. It includes all road travel occurring in the state, including commercial, freight, and visitor travel."},
     fuel_per_1000_vmt:{label:"Highway fuel per 1,000 VMT (gallons)",short:"Gallons per 1,000 VMT",unit:"gallons per 1,000 VMT",note:"FHWA highway fuel divided by FHWA public-road VMT. This is a system-level fuel-intensity measure, not passenger-vehicle MPG."},
     fuel_per_capita:{label:"Highway fuel per resident (gallons)",short:"Gallons per resident",unit:"gallons per resident",note:"This combines the amount of road travel with the amount of reported highway fuel used per mile."},
     gasoline_consistency_pct:{label:"FHWA highway gasoline / EIA transport gasoline (%)",short:"Gasoline consistency (%)",unit:"percent",note:"A reconciliation check between FHWA highway gasoline and EIA transportation motor gasoline. It is not a literal highway share."}
@@ -350,7 +350,7 @@ function renderLongRunChanges(){
   const n0=nationalForYear(2000),n24=nationalForYear(2024);
   if(n0&&n24){
     $("nationalChangeGrid").innerHTML=[
-      changeCard(pctChange(n0.vmt_per_capita,n24.vmt_per_capita),"VMT per resident"),
+      changeCard(pctChange(n0.vmt_per_capita,n24.vmt_per_capita),"Road VMT per resident"),
       changeCard(pctChange(n0.fuel_per_1000_vmt,n24.fuel_per_1000_vmt),"Highway fuel per 1,000 VMT"),
       changeCard(pctChange(n0.fuel_per_capita,n24.fuel_per_capita),"Highway fuel per resident")
     ].join("");
@@ -367,7 +367,7 @@ function renderLongRunChanges(){
   $("stateChangeTitle").textContent=`${state}, 2000–2024`;
   if(a&&b){
     $("stateChangeGrid").innerHTML=[
-      changeCard(pctChange(a.vmt_per_capita,b.vmt_per_capita),"VMT per resident"),
+      changeCard(pctChange(a.vmt_per_capita,b.vmt_per_capita),"Road VMT per resident"),
       changeCard(pctChange(a.fuel_per_1000_vmt,b.fuel_per_1000_vmt),"Highway fuel per 1,000 VMT"),
       changeCard(pctChange(a.fuel_per_capita,b.fuel_per_capita),"Highway fuel per resident")
     ].join("");
@@ -377,7 +377,7 @@ function renderLongRunChanges(){
 function renderStats(){
   const a=nationalForYear(2000),b=nationalForYear(2024);
   const vc=(b.vmt_per_capita/a.vmt_per_capita-1)*100,ic=(b.fuel_per_1000_vmt/a.fuel_per_1000_vmt-1)*100;
-  $("nationalStats").innerHTML=`<div class="stat"><div class="value">${Math.round(b.vmt_per_capita).toLocaleString()}</div><div class="label">miles of road travel per resident, 2024</div></div><div class="stat"><div class="value">${b.fuel_per_1000_vmt.toFixed(1)}</div><div class="label">highway fuel gallons per 1,000 VMT, 2024</div></div><div class="stat"><div class="value">${vc.toFixed(1)}%</div><div class="label">change in VMT per resident, 2000–2024</div></div><div class="stat"><div class="value">${ic.toFixed(1)}%</div><div class="label">change in fuel intensity, 2000–2024</div></div>`;
+  $("nationalStats").innerHTML=`<div class="stat"><div class="value">${Math.round(b.vmt_per_capita).toLocaleString()}</div><div class="label">road VMT miles per resident, 2024</div></div><div class="stat"><div class="value">${b.fuel_per_1000_vmt.toFixed(1)}</div><div class="label">highway fuel gallons per 1,000 VMT, 2024</div></div><div class="stat"><div class="value">${vc.toFixed(1)}%</div><div class="label">change in road VMT per resident, 2000–2024</div></div><div class="stat"><div class="value">${ic.toFixed(1)}%</div><div class="label">change in fuel intensity, 2000–2024</div></div>`;
 }
 function renderGasolineNational(){
   const r=DASH.data.national;
@@ -410,10 +410,10 @@ function renderMap(){
 function renderScatter(){
   const y=+$("scatterYear").value,r=currentStatesAt(y),n=nationalForYear(y);$("scatterYearLabel").textContent=y;
   const highlighted=new Set(DASH.scatterHighlights);
-  const base={type:"scatter",mode:"markers",x:r.map(x=>x.vmt_per_capita),y:r.map(x=>x.fuel_per_1000_vmt),text:r.map(x=>x.state),customdata:r.map(x=>[x.state]),marker:{size:9,color:"#8aa2af",opacity:.78,line:{width:1,color:"#fff"}},hovertemplate:"<b>%{text}</b><br>VMT per resident: %{x:,.0f}<br>Fuel per 1,000 VMT: %{y:.1f} gallons<extra></extra>"};
+  const base={type:"scatter",mode:"markers",x:r.map(x=>x.vmt_per_capita),y:r.map(x=>x.fuel_per_1000_vmt),text:r.map(x=>x.state),customdata:r.map(x=>[x.state]),marker:{size:9,color:"#8aa2af",opacity:.78,line:{width:1,color:"#fff"}},hovertemplate:"<b>%{text}</b><br>Road VMT per resident: %{x:,.0f}<br>Fuel per 1,000 VMT: %{y:.1f} gallons<extra></extra>"};
   const hi=r.filter(x=>highlighted.has(x.state));
   const traces=[base];
-  if(hi.length)traces.push({type:"scatter",mode:"markers+text",x:hi.map(x=>x.vmt_per_capita),y:hi.map(x=>x.fuel_per_1000_vmt),text:hi.map(x=>x.state),customdata:hi.map(x=>[x.state]),textposition:"top center",textfont:{size:11,color:"#183d50"},marker:{size:14,color:"#245b78",line:{width:1,color:"#fff"}},hovertemplate:"<b>%{text}</b><br>VMT per resident: %{x:,.0f}<br>Fuel per 1,000 VMT: %{y:.1f} gallons<extra></extra>",showlegend:false});
+  if(hi.length)traces.push({type:"scatter",mode:"markers+text",x:hi.map(x=>x.vmt_per_capita),y:hi.map(x=>x.fuel_per_1000_vmt),text:hi.map(x=>x.state),customdata:hi.map(x=>[x.state]),textposition:"top center",textfont:{size:11,color:"#183d50"},marker:{size:14,color:"#245b78",line:{width:1,color:"#fff"}},hovertemplate:"<b>%{text}</b><br>Road VMT per resident: %{x:,.0f}<br>Fuel per 1,000 VMT: %{y:.1f} gallons<extra></extra>",showlegend:false});
   Plotly.react("scatterChart",traces,{margin:{l:82,r:20,t:24,b:70},xaxis:{title:"Road VMT (miles per resident)"},yaxis:{title:"Highway fuel (gallons per 1,000 VMT)"},dragmode:"zoom",shapes:[{type:"line",x0:n.vmt_per_capita,x1:n.vmt_per_capita,y0:0,y1:1,yref:"paper",line:{color:"#6e7d87",dash:"dash",width:1}},{type:"line",y0:n.fuel_per_1000_vmt,y1:n.fuel_per_1000_vmt,x0:0,x1:1,xref:"paper",line:{color:"#6e7d87",dash:"dash",width:1}}],paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false,scrollZoom:true});
   const p=$("scatterChart");p.removeAllListeners?.("plotly_click");p.on("plotly_click",e=>{const s=e.points?.[0]?.customdata?.[0];if(!s)return;DASH.scatterHighlights=DASH.scatterHighlights.includes(s)?DASH.scatterHighlights.filter(x=>x!==s):[...DASH.scatterHighlights,s];renderScatter()});
 }
