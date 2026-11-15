@@ -109,15 +109,15 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
       <div id="trendChart" class="chart chart-lg" aria-label="State trend comparison chart"></div>
 
       <div class="change-summary" aria-labelledby="change-summary-title">
-        <h3 id="change-summary-title">Long-run change: national and state view</h3>
-        <p class="summary-note">This uses the latest year, 2024. FHWA reports methodology and state-reporting changes in 2024, so the 2000–2024 fuel changes should be interpreted with that comparability caution in mind.</p>
+        <h3 id="change-summary-title">Long-run change from 2000 to 2024: national and state view</h3>
+        <p class="summary-note">Each percentage shows how the 2024 value differs from the 2000 value. Negative values mean the measure was lower in 2024 than in 2000. FHWA reports methodology and state-reporting changes in 2024, so fuel changes involving 2024 should be interpreted with that comparability caution in mind.</p>
         <div class="change-block">
-          <strong>United States, 2000–2024</strong>
+          <strong>United States: change from 2000 to 2024</strong>
           <div id="nationalChangeGrid" class="change-grid"></div>
         </div>
         <div class="change-block">
           <div class="change-block-head">
-            <strong id="stateChangeTitle">State, 2000–2024</strong>
+            <strong id="stateChangeTitle">State: change from 2000 to 2024</strong>
             <label>Choose state <select id="changeStatePicker"></select></label>
           </div>
           <div id="stateChangeGrid" class="change-grid"></div>
@@ -364,7 +364,7 @@ function renderLongRunChanges(){
   }
   const state=picker.value||"California";
   const rows=recordsForState(state),a=rows.find(r=>r.year===2000),b=rows.find(r=>r.year===2024);
-  $("stateChangeTitle").textContent=`${state}, 2000–2024`;
+  $("stateChangeTitle").textContent=`${state}: change from 2000 to 2024`;
   if(a&&b){
     $("stateChangeGrid").innerHTML=[
       changeCard(pctChange(a.vmt_per_capita,b.vmt_per_capita),"Road VMT per resident"),
