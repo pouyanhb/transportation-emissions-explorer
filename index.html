@@ -40,7 +40,7 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
 
 .change-summary{margin-top:18px;border:1px solid var(--line);border-radius:12px;padding:19px;background:#fff}.change-summary h3{margin-bottom:4px}.change-summary .summary-note{color:var(--muted);font-size:.9rem;margin:0 0 14px}.change-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.change-card{border:1px solid var(--line);border-radius:10px;padding:15px;background:var(--soft)}.change-card .change-value{font-size:1.35rem;font-weight:800;line-height:1.1}.change-card .change-label{font-size:.82rem;color:var(--muted);margin-top:5px}.change-block{margin-top:16px}.change-block-head{display:flex;align-items:end;justify-content:space-between;gap:14px;flex-wrap:wrap}.formula-box{margin:16px 0;padding:15px 17px;background:linear-gradient(90deg,#e8f6f2,#f9fbf7);border:1px solid rgba(15,118,130,.12);border-radius:11px}.formula-box .formula{font-weight:800;font-size:1.02rem}.formula-box .formula-note{color:var(--muted);font-size:.9rem;margin-top:6px}@media(max-width:760px){.change-grid{grid-template-columns:1fr}.change-block-head{align-items:stretch}}
 
-/* Visual exploration — editorial / coastal palette. The pre-refresh page is preserved in Git history. */
+/* Visual exploration: editorial and coastal palette. The previous design is preserved in Git history. */
 :root{
   --ink:#20313d;
   --muted:#596c74;
@@ -477,7 +477,7 @@ footer{margin-top:54px}
       </div>
       <div class="subheading">
         <h3>On-road proxy relative to total transportation CO₂</h3>
-        <p class="plain-note">This line compares the FHWA highway-fuel-based CO₂ estimate with EIA's broader transportation CO₂ total. It is a comparison between two different estimates—not a measured share of emissions from roads.</p>
+        <p class="plain-note">This line compares the FHWA highway-fuel-based CO₂ estimate with EIA's broader transportation CO₂ total. It compares two estimates with different methods. The result does not measure the exact share of transportation emissions from roads.</p>
       </div>
       <div id="emissionsShareChart" class="chart" aria-label="On-road CO2 proxy as a percentage of total transportation CO2 by year"></div>
       <div class="emissions-reading-guide" aria-label="Understanding the emissions percentage">
@@ -516,7 +516,7 @@ footer{margin-top:54px}
       </div>
       <div class="takeaway-box">
         <h3>How to read transportation emissions</h3>
-        <p>In 2024, EIA reported 1,863.6 million metric tons of transportation CO₂ nationwide. That was 7.8% below its 2007 peak, but only about 1.1% below 2000. Per resident, emissions fell much more—17.9% since 2000—to 5.48 metric tons. The difference comes from comparing the total with the total divided by a growing population.</p>
+        <p>In 2024, EIA reported 1,863.6 million metric tons of transportation CO₂ nationwide. That was 7.8% below its 2007 peak, but only about 1.1% below 2000. Transportation emissions per resident fell by 17.9% from 2000 to 2024, reaching 5.48 metric tons per person. This decline was larger because the population grew while total emissions changed relatively little.</p>
         <p>The FHWA on-road estimate was equal to 84.6% of EIA's transportation total in 2024, down from 87.8% in 2023. For individual states, higher or lower ratios describe how the two estimates compare, not the exact division between road and non-road emissions. A ratio above 100% signals a mismatch in scope or accounting, not physically more than 100% of emissions.</p>
       </div>
     </section>
@@ -643,7 +643,7 @@ function renderLongRunChanges(){
 function renderStats(){
   const a=nationalForYear(2000),b=nationalForYear(2024);
   const vc=(b.vmt_per_capita/a.vmt_per_capita-1)*100,ic=(b.fuel_per_1000_vmt/a.fuel_per_1000_vmt-1)*100;
-  $("nationalStats").innerHTML=`<div class="stat"><div class="value">${Math.round(b.vmt_per_capita).toLocaleString()}</div><div class="label">road VMT miles per resident, 2024</div></div><div class="stat"><div class="value">${b.fuel_per_1000_vmt.toFixed(1)}</div><div class="label">highway fuel gallons per 1,000 VMT, 2024</div></div><div class="stat"><div class="value">${vc.toFixed(1)}%</div><div class="label">change in road VMT per resident, 2000–2024</div></div><div class="stat"><div class="value">${ic.toFixed(1)}%</div><div class="label">change in fuel intensity, 2000–2024</div></div>`;
+  $("nationalStats").innerHTML=`<div class="stat"><div class="value">${Math.round(b.vmt_per_capita).toLocaleString()}</div><div class="label">road VMT miles per resident, 2024</div></div><div class="stat"><div class="value">${b.fuel_per_1000_vmt.toFixed(1)}</div><div class="label">highway fuel gallons per 1,000 VMT, 2024</div></div><div class="stat"><div class="value">${vc.toFixed(1)}%</div><div class="label">change in road VMT per resident, 2000 to 2024</div></div><div class="stat"><div class="value">${ic.toFixed(1)}%</div><div class="label">change in fuel intensity, 2000 to 2024</div></div>`;
 }
 function renderGasolineNational(){
   const r=DASH.data.national;
@@ -686,7 +686,7 @@ function renderScatter(){
 function renderEmissionsStats(){
   const n0=DASH.level3.national.find(x=>x.y===2000),n7=DASH.level3.national.find(x=>x.y===2007),n24=DASH.level3.national.find(x=>x.y===2024);
   const pcChange=(n24.p/n0.p-1)*100,peakChange=(n24.e/n7.e-1)*100;
-  $("emissionsStats").innerHTML=`<div class="stat"><div class="value">${n24.e.toLocaleString(undefined,{maximumFractionDigits:1})}</div><div class="label">million metric tons EIA transportation CO₂, 2024</div></div><div class="stat"><div class="value">${n24.p.toFixed(2)}</div><div class="label">metric tons transportation CO₂ per resident, 2024</div></div><div class="stat"><div class="value">${pcChange.toFixed(1)}%</div><div class="label">change in transportation CO₂ per resident, 2000–2024</div></div><div class="stat"><div class="value">${peakChange.toFixed(1)}%</div><div class="label">change in total transportation CO₂ from 2007 peak to 2024</div></div><div class="stat"><div class="value">${n24.o.toLocaleString(undefined,{maximumFractionDigits:1})}</div><div class="label">million metric tons FHWA on-road CO₂ proxy, 2024</div></div><div class="stat"><div class="value">${n24.r.toFixed(1)}%</div><div class="label">on-road CO₂ proxy relative to EIA transportation CO₂, 2024</div></div>`;
+  $("emissionsStats").innerHTML=`<div class="stat"><div class="value">${n24.e.toLocaleString(undefined,{maximumFractionDigits:1})}</div><div class="label">million metric tons EIA transportation CO₂, 2024</div></div><div class="stat"><div class="value">${n24.p.toFixed(2)}</div><div class="label">metric tons transportation CO₂ per resident, 2024</div></div><div class="stat"><div class="value">${pcChange.toFixed(1)}%</div><div class="label">change in transportation CO₂ per resident, 2000 to 2024</div></div><div class="stat"><div class="value">${peakChange.toFixed(1)}%</div><div class="label">change in total transportation CO₂ from 2007 peak to 2024</div></div><div class="stat"><div class="value">${n24.o.toLocaleString(undefined,{maximumFractionDigits:1})}</div><div class="label">million metric tons FHWA on-road CO₂ proxy, 2024</div></div><div class="stat"><div class="value">${n24.r.toFixed(1)}%</div><div class="label">on-road CO₂ proxy relative to EIA transportation CO₂, 2024</div></div>`;
 }
 function renderEmissionsNational(){
   const r=DASH.level3.national;
@@ -710,7 +710,7 @@ function renderEmissionsState(){
     p:`In ${y}, this shows EIA transportation CO₂ per resident, measured in metric tons per person. The U.S. value was ${us.p.toFixed(2)} metric tons per person. A higher state value means more transportation emissions relative to its population; it does not measure a typical resident's personal driving emissions.`,
     e:`In ${y}, this shows EIA's total transportation CO₂ in each state, measured in million metric tons. The U.S. total was ${us.e.toLocaleString(undefined,{maximumFractionDigits:1})} million metric tons. Larger states can have higher totals partly because they have more people and travel. Choose the per-resident measure for a population-adjusted comparison.`,
     q:`In ${y}, this shows the FHWA highway-fuel-based on-road CO₂ estimate per resident, in metric tons per person. The U.S. value was ${us.q.toFixed(2)} metric tons per person. It includes fuel associated with road travel by residents, visitors, and commercial vehicles, so it is not a measure of an individual's driving or a complete emissions inventory.`,
-    r:`In ${y}, this percentage compares the FHWA on-road CO₂ estimate with EIA's transportation CO₂ total. The U.S. ratio was ${us.r.toFixed(1)}%. For example, 85% means the FHWA estimate equals 85% of the EIA total—not that exactly 85% came from roads. Values above 100% can occur because the two datasets have different scopes and accounting methods. The map shows this comparison, not a ranking of transportation efficiency.`
+    r:`In ${y}, this percentage compares the FHWA on-road CO₂ estimate with EIA's transportation CO₂ total. The U.S. ratio was ${us.r.toFixed(1)}%. For example, a ratio of 85% means the FHWA estimate is equivalent to 85% of the EIA total. It does not mean roads accounted for exactly 85% of transportation emissions. Values above 100% can occur because the two datasets have different scopes and accounting methods. The map shows this comparison, not a ranking of transportation efficiency.`
   };
   $("emissionsMeasureExplanation").textContent=descriptions[k];
   const r=DASH.level3.states.filter(x=>x.y===y);
