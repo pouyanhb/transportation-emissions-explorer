@@ -546,8 +546,8 @@ footer{margin-top:54px}
         <h3>How to read transportation emissions</h3>
         <p>In 2024, EIA reported 1,863.6 million metric tons of transportation CO₂ nationwide. That was 7.8% below its 2007 peak, but only about 1.1% below 2000. Transportation emissions per resident fell by 17.9% from 2000 to 2024, reaching 5.48 metric tons per person. This decline was larger because the population grew while total emissions changed relatively little.</p>
         <p>The FHWA on-road estimate was equal to 84.6% of EIA's transportation total in 2024, down from 87.8% in 2023. For individual states, higher or lower ratios describe how the two estimates compare, not the exact division between road and non-road emissions. A ratio above 100% signals a mismatch in scope or accounting, not physically more than 100% of emissions.</p>
-        <p><strong>Why state rankings change between EIA and FHWA:</strong> EIA covers a wider range of transportation fuels, including gasoline, diesel and other distillate fuels, jet fuel, marine fuels, and natural gas used for vehicles and pipelines. Our FHWA estimate uses reported highway fuel. A state can therefore rank high in EIA emissions but much lower in FHWA's highway-fuel-based estimate. Both per-resident measures divide statewide activity by population. Neither represents how much the typical resident personally emits.</p>
-        <p><strong>Looking at fuel sources helps explain the patterns.</strong> In 2024, jet fuel made up most of EIA's transportation CO₂ in Alaska and Hawaii. Natural gas was a substantial category in Louisiana and North Dakota. Wyoming's EIA total was dominated by motor gasoline and distillate fuel. These differences help explain why state rankings are not interchangeable, but fuel categories are not the same as transportation modes. In particular, distillate includes uses beyond highway vehicles, so EIA's fuel breakdown cannot be used to calculate an exact road-emissions share.</p>
+        <p><strong>Why state rankings change between EIA and FHWA:</strong> EIA includes fuels used for highway travel, aviation, shipping, rail, and pipeline operations. Our FHWA estimate uses reported highway fuel. A state can therefore rank high in EIA emissions but much lower in FHWA's highway-fuel-based estimate. Both per-resident measures divide statewide activity by population. Neither represents how much the typical resident personally emits.</p>
+        <p><strong>Looking at fuel sources helps explain the patterns.</strong> In 2024, jet fuel made up most of EIA's transportation CO₂ in Alaska and Hawaii. Natural gas was a substantial category in Louisiana and North Dakota. EIA counts natural gas used to operate pipelines as transportation fuel, as well as natural gas used by vehicles. This does not mean these states have unusually large fleets of natural-gas vehicles. Wyoming's EIA total was dominated by motor gasoline and distillate fuel. These differences help explain why state rankings are not interchangeable, but fuel categories are not the same as transportation modes. In particular, distillate includes uses beyond highway vehicles, so EIA's fuel breakdown cannot be used to calculate an exact road-emissions share.</p>
       </div>
       <details class="emissions-fuel-examples">
         <summary>Explore the 2024 EIA fuel breakdown: six state examples</summary>
@@ -558,13 +558,14 @@ footer{margin-top:54px}
             <tbody>
               <tr><td>Alaska</td><td>Jet fuel: 62.2%</td><td>20.12</td><td>4.73</td></tr>
               <tr><td>Hawaii</td><td>Jet fuel: 60.6%</td><td>7.87</td><td>2.75</td></tr>
-              <tr><td>Louisiana</td><td>Natural gas: 33.7%</td><td>10.23</td><td>5.35</td></tr>
-              <tr><td>North Dakota</td><td>Natural gas: 24.9%</td><td>11.41</td><td>7.78</td></tr>
+              <tr><td>Louisiana</td><td>Natural gas: 33.7%*</td><td>10.23</td><td>5.35</td></tr>
+              <tr><td>North Dakota</td><td>Natural gas: 24.9%*</td><td>11.41</td><td>7.78</td></tr>
               <tr><td>Wyoming</td><td>Motor gasoline: 36.0%; distillate: 51.9%</td><td>12.87</td><td>11.24</td></tr>
               <tr><td>California</td><td>Motor gasoline: 53.8%; jet fuel: 21.1%</td><td>4.60</td><td>3.53</td></tr>
             </tbody>
           </table>
         </div>
+        <p class="fuel-examples-note"><strong>* Natural gas in EIA transportation data</strong> includes fuel used in pipeline operations and in natural-gas vehicles. These figures do not show how much was used by vehicles alone.</p>
         <p class="fuel-examples-note"><strong>How to interpret this:</strong> Alaska ranks first for EIA CO₂ per resident but only 27th for the FHWA estimate. Wyoming ranks second for EIA CO₂ per resident and first for the FHWA estimate. Hawaii and Louisiana also move substantially between the two rankings. Fuel sources provide context, not a precise calculation of road versus non-road emissions. The FHWA and EIA estimates have different scopes and accounting methods, and 2024 FHWA fuel estimates have additional comparability cautions.</p>
         <p class="fuel-examples-source">Source: <a href="https://www.eia.gov/state/seds/data.php?incfile=%2Fstate%2Fseds%2Fsep_sum%2Fhtml%2Fsum_co2_tra.html&amp;sid=AK" target="_blank" rel="noopener">EIA SEDS Table CO2.5, 2024 transportation CO₂ by fuel</a>. Fuel shares calculated as fuel-specific emissions divided by each state's EIA transportation total. Per-resident estimates come from the dashboard's 2024 data.</p>
       </details>
