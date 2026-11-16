@@ -246,11 +246,6 @@ footer{margin-top:54px}
   color:#174a50;
   font-weight:500;
 }
-.methodology .method-unit-note{
-  margin-top:12px;
-  font-size:.86rem;
-  color:#5b7076;
-}
 </style>
   <script src="https://cdn.plot.ly/plotly-3.1.0.min.js"></script>
 </head>
@@ -277,7 +272,7 @@ footer{margin-top:54px}
     <section class="intro-grid" aria-labelledby="headline-findings">
       <div>
         <p class="eyebrow">Project overview</p>
-        <h2 id="headline-findings">What the analysis is trying to explain</h2>
+        <h2 id="headline-findings">What this analysis explores</h2>
         <p>The project focuses on two questions: why highway fuel use differs across states, and how road transportation fits into total transportation CO₂ emissions.</p>
         <p>In 2024, road VMT per resident was close to its 2000 level, while reported highway fuel use per 1,000 vehicle miles was lower. That points to lower fuel use per mile, rather than a sustained decline in travel, as the larger long-run contributor to lower highway fuel use per resident.</p>
         <p class="caution"><strong>2024 fuel note:</strong> <a href="https://www.fhwa.dot.gov/policyinformation/statistics/2024/mf21.cfm" target="_blank" rel="noopener">FHWA's 2024 MF-21 documentation</a> notes that some 2024 estimates may not be comparable with prior years because of revised nonhighway estimation procedures and, for some states, changes in data analysis or reporting procedures. We use 2024 throughout the dashboard as the latest observation, but interpret changes involving 2024 cautiously.</p>
@@ -486,7 +481,6 @@ footer{margin-top:54px}
         <p class="method-formula"><strong>Formula:</strong> (FHWA highway fuel in gallons ÷ FHWA public-road VMT in miles) × 1,000 = gallons per 1,000 VMT.</p>
         <p><strong>Example:</strong> If vehicles travel 20 million miles and consume 1 million gallons of highway fuel, that works out to 50 gallons per 1,000 VMT.</p>
         <p>This is a system-level measure, not the MPG of an individual car. It combines fuel consumption and travel across cars, light trucks, heavy trucks, buses, and different driving conditions. State differences can reflect vehicle efficiency, road conditions, travel patterns, freight activity, and differences in fuel and VMT accounting.</p>
-        <p class="method-unit-note"><strong>About the data units:</strong> When FHWA fuel figures are expressed in thousands of gallons and VMT figures in millions of miles, dividing those published values already gives gallons per 1,000 VMT. Do not multiply by 1,000 again.</p>
       </details>
       <details><summary>What the 2024 caution means</summary><p>FHWA's 2024 MF-21 notes revised estimation procedures for public and non-highway use and warns that some state data may not be comparable with prior years because of reporting or analysis changes. Our highway-fuel series also shows a larger-than-usual national change in 2024. We therefore show 2024 but avoid making strong structural claims from the one-year movement.</p></details>
       <details><summary>Why the on-road CO₂ ratio can exceed 100%</summary><p>The numerator and denominator come from different systems with different fuel definitions, allocation methods, revisions, and sector boundaries. A value above 100% is a reconciliation flag. We do not cap it and do not interpret it as a literal physical share.</p></details>
