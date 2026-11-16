@@ -270,6 +270,29 @@ footer{margin-top:54px}
 @media(max-width:760px){
   .emissions-reading-guide{padding:17px 18px}
 }
+
+/* Always-visible units for Section 3 national CO₂ comparison chart. */
+.emissions-chart-heading{
+  display:flex;
+  gap:8px 20px;
+  align-items:baseline;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  margin:23px 0 6px;
+}
+.emissions-chart-heading h3{
+  margin:0;
+  color:var(--deep);
+  font-family:var(--heading-font);
+  font-size:1.14rem;
+  font-weight:650;
+}
+.emissions-chart-unit{
+  color:#48636b;
+  font-size:.89rem;
+  font-weight:700;
+  white-space:normal;
+}
 </style>
   <script src="https://cdn.plot.ly/plotly-3.1.0.min.js"></script>
 </head>
@@ -441,7 +464,11 @@ footer{margin-top:54px}
         <p><strong>Percentage comparison:</strong> the on-road proxy divided by EIA total transportation CO₂ shows how large the highway-fuel-based estimate is relative to the broader transportation total. For example, 87.8% means the proxy is equivalent to about 88% of EIA transportation CO₂. The remaining percentage should not be interpreted as an exact non-road share because the two series have different scopes and accounting methods.</p>
       </div>
       <div class="stat-grid emissions-stats" id="emissionsStats"></div>
-      <div id="emissionsNationalChart" class="chart chart-lg" aria-label="National transportation CO2 trend"></div>
+      <div class="emissions-chart-heading">
+        <h3>National transportation CO₂ over time</h3>
+        <span class="emissions-chart-unit">Unit: million metric tons CO₂</span>
+      </div>
+      <div id="emissionsNationalChart" class="chart chart-lg" aria-label="National transportation CO₂ trend, measured in million metric tons"></div>
       <div class="emissions-reading-guide" aria-label="Understanding the national emissions trends">
         <h3>How to read the two lines</h3>
         <p><strong>Both lines show total U.S. emissions, not emissions per person.</strong> The EIA line covers transportation overall, including more than road travel. The FHWA line is an approximate on-road CO₂ estimate calculated from highway fuel use.</p>
