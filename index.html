@@ -219,6 +219,38 @@ footer{margin-top:54px}
 @media(prefers-reduced-motion:reduce){
   button{transition:none}
 }
+
+/* Consistent methods styling, matching the updated report's other sections. */
+.methodology details{
+  margin:13px 0;
+  padding:17px 19px;
+  border:1px solid #dde8e6;
+  border-radius:13px;
+  background:#fff;
+  box-shadow:0 3px 11px rgba(26,58,65,.025);
+}
+.methodology details[open]{border-color:#b9d6d0;background:#fdfefe}
+.methodology summary{
+  font-family:var(--heading-font);
+  font-size:1.06rem;
+  font-weight:650;
+  color:var(--deep);
+}
+.methodology details p{line-height:1.7}
+.methodology .method-formula{
+  margin:14px 0;
+  padding:14px 16px;
+  border:1px solid #d0e5df;
+  border-radius:10px;
+  background:#e9f5f1;
+  color:#174a50;
+  font-weight:500;
+}
+.methodology .method-unit-note{
+  margin-top:12px;
+  font-size:.86rem;
+  color:#5b7076;
+}
 </style>
   <script src="https://cdn.plot.ly/plotly-3.1.0.min.js"></script>
 </head>
@@ -254,8 +286,10 @@ footer{margin-top:54px}
     </section>
 
     <section class="panel" id="walkthrough" aria-labelledby="walkthrough-title">
-      <p class="eyebrow">Section 1</p>
-      <h2 id="walkthrough-title">1. Project logic</h2>
+      <div class="section-heading">
+        <p class="eyebrow">Section 1</p>
+        <h2 id="walkthrough-title">1. Project logic</h2>
+      </div>
       <h3 class="subsection-title">The analysis in two steps</h3>
       <div class="walkthrough-grid">
         <article><div class="step-no">1</div><h3>Separate travel from fuel intensity</h3><p>Use road VMT per resident to measure the amount of road travel occurring in a state relative to its population. <strong>Fuel intensity</strong> is highway fuel use per 1,000 VMT: how many gallons of reported highway fuel are used for a given amount of road travel. We use fuel intensity rather than MPG because MPG is a vehicle-level efficiency measure, while this analysis compares statewide total highway fuel with statewide total VMT across all vehicle types and travel conditions.</p></article>
@@ -427,8 +461,10 @@ footer{margin-top:54px}
     </section>
 
     <section class="panel methodology" id="methods" aria-labelledby="method-title">
-      <p class="eyebrow">Section 4</p>
-      <h2 id="method-title">4. Data and methods</h2>
+      <div class="section-heading">
+        <p class="eyebrow">Section 4</p>
+        <h2 id="method-title">4. Data and methods</h2>
+      </div>
       <h3 class="subsection-title">Datasets used in the project</h3>
       <p class="method-intro">The table below is the audit trail. Each dataset has a specific job in the analysis.</p>
       <div class="table-wrap">
@@ -445,7 +481,13 @@ footer{margin-top:54px}
         </table>
       </div>
 
-      <details><summary>What “highway fuel per 1,000 VMT” means</summary><p>Reported FHWA highway fuel divided by public-road VMT. It is a system-level fuel-intensity measure. It can reflect fleet efficiency, freight activity, road conditions, travel patterns, and differences in fuel/VMT accounting. It is not passenger-vehicle MPG.</p></details>
+      <details><summary>What “highway fuel per 1,000 VMT” means</summary>
+        <p>Highway fuel use per 1,000 VMT tells us how many gallons of reported highway fuel are used for every 1,000 vehicle miles traveled on a state's public roads. Lower values mean less reported fuel is used for the same amount of road travel.</p>
+        <p class="method-formula"><strong>Formula:</strong> (FHWA highway fuel in gallons ÷ FHWA public-road VMT in miles) × 1,000 = gallons per 1,000 VMT.</p>
+        <p><strong>Example:</strong> If vehicles travel 20 million miles and consume 1 million gallons of highway fuel, that works out to 50 gallons per 1,000 VMT.</p>
+        <p>This is a system-level measure, not the MPG of an individual car. It combines fuel consumption and travel across cars, light trucks, heavy trucks, buses, and different driving conditions. State differences can reflect vehicle efficiency, road conditions, travel patterns, freight activity, and differences in fuel and VMT accounting.</p>
+        <p class="method-unit-note"><strong>About the data units:</strong> When FHWA fuel figures are expressed in thousands of gallons and VMT figures in millions of miles, dividing those published values already gives gallons per 1,000 VMT. Do not multiply by 1,000 again.</p>
+      </details>
       <details><summary>What the 2024 caution means</summary><p>FHWA's 2024 MF-21 notes revised estimation procedures for public and non-highway use and warns that some state data may not be comparable with prior years because of reporting or analysis changes. Our highway-fuel series also shows a larger-than-usual national change in 2024. We therefore show 2024 but avoid making strong structural claims from the one-year movement.</p></details>
       <details><summary>Why the on-road CO₂ ratio can exceed 100%</summary><p>The numerator and denominator come from different systems with different fuel definitions, allocation methods, revisions, and sector boundaries. A value above 100% is a reconciliation flag. We do not cap it and do not interpret it as a literal physical share.</p></details>
       <p class="footnote">EIA methodology and variable definitions are documented in the <a href="https://www.eia.gov/state/seds/seds-technical-notes-complete.php" target="_blank" rel="noopener">SEDS technical notes</a>.</p>
