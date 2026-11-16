@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>U.S. Transportation Emissions Explorer</title>
   <meta name="description" content="State-level road travel, highway fuel use, and transportation CO2 from 2000 to 2024 using FHWA and EIA data.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#163545">
   <style>*{box-sizing:border-box}
 :root{--ink:#1f2d36;--muted:#66737d;--line:#e1e6ea;--soft:#f5f7f8;--accent:#2f6f73;--accent-strong:#255d61;--accent-soft:#edf5f4;--warn:#765b2d;--warn-soft:#faf5e9;--panel:#ffffff;--max:1180px}
 html{scroll-behavior:smooth}
@@ -35,6 +39,186 @@ footer{border-top:1px solid var(--line);margin-top:44px;padding:24px 0 46px;colo
 @media (max-width:760px){.scatter-state-label{width:100%;margin-right:0}.scatter-state-label select{min-width:0;flex:1}}
 
 .change-summary{margin-top:18px;border:1px solid var(--line);border-radius:12px;padding:19px;background:#fff}.change-summary h3{margin-bottom:4px}.change-summary .summary-note{color:var(--muted);font-size:.9rem;margin:0 0 14px}.change-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.change-card{border:1px solid var(--line);border-radius:10px;padding:15px;background:var(--soft)}.change-card .change-value{font-size:1.35rem;font-weight:800;line-height:1.1}.change-card .change-label{font-size:.82rem;color:var(--muted);margin-top:5px}.change-block{margin-top:16px}.change-block-head{display:flex;align-items:end;justify-content:space-between;gap:14px;flex-wrap:wrap}.formula-box{margin:16px 0;padding:15px 17px;background:linear-gradient(90deg,#e8f6f2,#f9fbf7);border:1px solid rgba(15,118,130,.12);border-radius:11px}.formula-box .formula{font-weight:800;font-size:1.02rem}.formula-box .formula-note{color:var(--muted);font-size:.9rem;margin-top:6px}@media(max-width:760px){.change-grid{grid-template-columns:1fr}.change-block-head{align-items:stretch}}
+
+/* Visual exploration — editorial / coastal palette. The pre-refresh page is preserved in Git history. */
+:root{
+  --ink:#20313d;
+  --muted:#596c74;
+  --line:#dce5e5;
+  --soft:#f4f7f6;
+  --accent:#187b7a;
+  --accent-strong:#125b60;
+  --accent-soft:#e6f3f0;
+  --warn:#795a35;
+  --warn-soft:#fff6e7;
+  --panel:#ffffff;
+  --max:1200px;
+  --copper:#dc7455;
+  --deep:#163545;
+  --heading-font:"Outfit",ui-sans-serif,system-ui,sans-serif;
+  --body-font:"DM Sans",ui-sans-serif,system-ui,sans-serif;
+}
+body{
+  font-family:var(--body-font);
+  color:var(--ink);
+  background:#f3f5f2;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:#136e78;text-decoration-color:#a0c5c5;text-underline-offset:3px}
+a:hover{color:#ac563e;text-decoration-color:currentColor}
+h1,h2,h3,h4,.stat .value,.change-value{
+  font-family:var(--heading-font);
+}
+h1{font-size:clamp(2.65rem,5.3vw,4.65rem);font-weight:700;line-height:1.06;letter-spacing:-.045em;max-width:1010px}
+h2{font-size:clamp(1.75rem,3vw,2.4rem);font-weight:650;letter-spacing:-.033em}
+h3{letter-spacing:-.014em}
+.site-header{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  padding:70px 0 60px;
+  background:
+    radial-gradient(ellipse at 96% 7%,rgba(231,130,92,.28),transparent 30%),
+    radial-gradient(ellipse at 2% 105%,rgba(36,173,157,.25),transparent 40%),
+    linear-gradient(112deg,#142c40 0%,#184357 54%,#17575a 100%);
+  border-bottom:4px solid #e18360;
+}
+.site-header:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);
+  background-size:52px 52px;
+  opacity:.34;
+  mask-image:linear-gradient(to right,transparent 13%,black 100%);
+}
+.site-header .eyebrow{color:#f2c7b2;font-size:.8rem;letter-spacing:.17em}
+.site-header .lede{color:#d9e6e7;font-size:1.23rem;max-width:850px}
+.site-header .byline{color:#c9dadd}
+.site-header .byline a{color:#fff;border-bottom-color:rgba(255,255,255,.45)}
+.site-header .byline a:hover{color:#ffd4bd}
+.eyebrow{color:#a2543e;font-weight:800;letter-spacing:.12em}
+.section-nav{background:rgba(255,255,255,.94);border-bottom-color:#dce6e6;box-shadow:0 4px 18px rgba(21,58,70,.05)}
+.nav-inner{padding-top:12px;padding-bottom:12px;gap:11px}
+.nav-inner a{color:#47616a;font-weight:700;border-radius:9px;padding:8px 13px}
+.nav-inner a:hover{color:#115e67;background:#eaf5f2}
+.nav-inner a.active{background:var(--deep);color:#fff;box-shadow:0 3px 8px rgba(16,42,60,.15)}
+.intro-grid{
+  margin-top:37px;
+  padding:34px;
+  gap:32px;
+  background:linear-gradient(120deg,#fff 0%,#fff 74%,#f3faf8 100%);
+  border-color:#e0e8e6;
+  border-radius:20px;
+  box-shadow:0 12px 36px rgba(26,57,68,.065);
+}
+.intro-grid h2{color:var(--deep)}
+.panel{
+  margin:30px 0;
+  padding:36px 34px 33px;
+  border-radius:20px;
+  border:1px solid #dfe8e7;
+  box-shadow:0 7px 24px rgba(25,54,65,.045);
+  scroll-margin-top:90px;
+}
+.panel>.eyebrow,.panel .section-heading>.eyebrow{margin-bottom:8px}
+.subsection-title{
+  font-family:var(--heading-font);
+  border-left:0;
+  border-bottom:1px solid #e0e9e8;
+  padding:0 0 11px;
+  margin:0 0 16px;
+  color:var(--deep);
+  font-size:1.43rem;
+  font-weight:650;
+}
+.section-heading p{max-width:940px;color:#566b72;line-height:1.7}
+.stat,.walkthrough-grid article,.quadrant-guide>div,.present-grid>div{
+  border-color:#dde8e6;
+  border-radius:13px;
+  background:#fff;
+  box-shadow:0 3px 11px rgba(26,58,65,.025);
+}
+.stat{border-top:3px solid #92c1b9;padding:19px}
+.stat .value{font-size:1.8rem;color:#164e59;font-weight:700;letter-spacing:-.035em}
+.stat .label{color:#5c7079;font-weight:550;line-height:1.4}
+.walkthrough-grid{gap:16px}
+.walkthrough-grid article{padding:23px;background:linear-gradient(145deg,#fff,#fbfdfc)}
+.walkthrough-grid article h3{font-size:1.16rem;color:var(--deep)}
+.step-no{height:36px;width:36px;background:#e8f1f0;color:#176e70;font-family:var(--heading-font);font-weight:700;border:1px solid #b6d7d0}
+.caution{background:#fff7eb;border-left-color:#e7aa68;color:#71552f;border-radius:10px}
+.controls label,.year-control label,.scatter-state-label{color:#304c57;font-weight:700}
+select{
+  border-color:#c7d9d9;
+  border-radius:10px;
+  background:#fff;
+  box-shadow:0 1px 3px rgba(30,65,70,.025);
+}
+select:hover{border-color:#5aa6a0}
+button{
+  background:var(--accent);
+  font-family:var(--body-font);
+  border-radius:10px;
+  font-weight:700;
+  box-shadow:0 3px 9px rgba(23,113,117,.12);
+  transition:background .15s ease,transform .15s ease;
+}
+button:hover{background:#116769;filter:none}
+button:active{transform:translateY(1px)}
+.secondary-btn{color:#146b70;border-color:#9fc9c5;box-shadow:none;background:#fff}
+.secondary-btn:hover{background:#edf6f4}
+input[type="range"],input[type="checkbox"]{accent-color:#177f7a}
+.chip{background:#e9f5f1;color:#125d64;border-color:#c4ded7;box-shadow:none}
+.chip:hover{background:#d8ece6}
+.plain-note,.quadrant-caution{background:#f6f8f7;border-color:#e0e8e7;color:#47616b}
+.measure-note strong{color:#145d64}
+.highlight-box{background:#f0f8f6;border-left-color:#1d8782;color:#385c63}
+.chart{border-radius:11px}
+.quadrant-interpretation{padding-top:28px}
+.quadrant-guide{gap:14px}
+.quadrant-guide>div{padding:19px 20px;border-top:3px solid #d5e5e3}
+.quadrant-guide>div:nth-child(1){border-top-color:#d9785b}
+.quadrant-guide>div:nth-child(2){border-top-color:#378e8b}
+.quadrant-guide>div:nth-child(3){border-top-color:#d8a458}
+.quadrant-guide>div:nth-child(4){border-top-color:#6b9d8e}
+.quadrant-guide strong{color:var(--deep);font-size:.96rem}
+.takeaway-box{
+  background:#f8faf9;
+  border-left:4px solid #2b8580;
+  border-top:1px solid #e0eae8;
+  border-right:1px solid #e0eae8;
+  border-bottom:1px solid #e0eae8;
+  border-radius:12px;
+  padding:23px 25px;
+}
+.takeaway-box h3{color:#17434b;font-size:1.13rem}
+.takeaway-box p{color:#425962;line-height:1.76}
+.ranking-scroll,.table-wrap{border-color:#d8e5e3;border-radius:12px}
+.source-table th{background:#eaf2f0;color:#1d4e56;font-family:var(--heading-font);font-weight:650}
+.source-table tr:nth-child(even) td{background:#fbfcfc}
+.source-table tbody tr:hover td{background:#f3f9f7}
+.methodology summary{color:var(--deep)}
+.methodology summary:hover{color:#147477}
+.change-summary{border-color:#dae6e3;background:#fdfefe;border-radius:14px;padding:23px}
+.change-card{background:linear-gradient(145deg,#fff,#f7faf9);border-color:#dae6e3;border-radius:12px;padding:18px}
+.change-card .change-value{color:#185f65;font-size:1.55rem}
+.change-card .change-label{color:#5b7076}
+.formula-box{background:linear-gradient(115deg,#e7f2f0,#f8fbf9);border-color:#cee4de}
+.footnote,footer{color:#687b81}
+footer{margin-top:54px}
+@media(max-width:760px){
+  .site-header{padding:51px 0 45px}
+  .intro-grid{padding:24px}
+  .panel{padding:27px 21px 25px}
+  .takeaway-box{padding:18px}
+  .site-header .lede{font-size:1.1rem}
+}
+@media(prefers-reduced-motion:reduce){
+  button{transition:none}
+}
 </style>
   <script src="https://cdn.plot.ly/plotly-3.1.0.min.js"></script>
 </head>
@@ -361,7 +545,7 @@ function renderStats(){
 }
 function renderGasolineNational(){
   const r=DASH.data.national;
-  Plotly.react("gasolineNationalChart",[{x:r.map(x=>x.year),y:r.map(x=>x.gasoline_consistency_pct),type:"scatter",mode:"lines+markers",name:"National ratio",hovertemplate:"%{x}<br>%{y:.1f}%<extra></extra>"}],{margin:{l:68,r:20,t:20,b:55},xaxis:{title:"Year",dtick:4},yaxis:{title:"FHWA highway gasoline / EIA transport gasoline (%)"},shapes:[{type:"line",x0:2000,x1:2024,y0:100,y1:100,line:{dash:"dash",width:1,color:"#778791"}}],paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});
+  Plotly.react("gasolineNationalChart",[{x:r.map(x=>x.year),y:r.map(x=>x.gasoline_consistency_pct),type:"scatter",mode:"lines+markers",name:"National ratio",hovertemplate:"%{x}<br>%{y:.1f}%<extra></extra>"}],{margin:{l:68,r:20,t:20,b:55},xaxis:{title:"Year",dtick:4},yaxis:{title:"FHWA highway gasoline / EIA transport gasoline (%)"},shapes:[{type:"line",x0:2000,x1:2024,y0:100,y1:100,line:{dash:"dash",width:1,color:"#90a3a8"}}],paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});
 }
 function renderTrend(){
   const k=$("trendMetric").value,m=DASH.metrics[k];
@@ -380,7 +564,7 @@ function renderRanking(y,k,m,r){
   const ranked=[...r].filter(x=>Number.isFinite(x[k])).sort((a,b)=>b[k]-a[k]);
   const display=[...ranked].reverse();
   const labels=display.map(x=>`${ranked.findIndex(z=>z.state===x.state)+1}. ${x.state}`);
-  Plotly.react("rankingChart",[{type:"bar",orientation:"h",x:display.map(x=>x[k]),y:labels,text:display.map(x=>formatRankValue(x[k],k)),textposition:"outside",cliponaxis:false,customdata:display.map(x=>[x.state,x.abbr,ranked.findIndex(z=>z.state===x.state)+1]),hovertemplate:`<b>%{customdata[2]}. %{customdata[0]}</b><br>${m.label}: %{x:,.2f}<extra></extra>`,marker:{color:"#6f8997"}}],{margin:{l:130,r:65,t:10,b:55},xaxis:{title:m.unit,automargin:true,zeroline:false},yaxis:{automargin:true,tickfont:{size:11}},bargap:.24,paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});
+  Plotly.react("rankingChart",[{type:"bar",orientation:"h",x:display.map(x=>x[k]),y:labels,text:display.map(x=>formatRankValue(x[k],k)),textposition:"outside",cliponaxis:false,customdata:display.map(x=>[x.state,x.abbr,ranked.findIndex(z=>z.state===x.state)+1]),hovertemplate:`<b>%{customdata[2]}. %{customdata[0]}</b><br>${m.label}: %{x:,.2f}<extra></extra>`,marker:{color:"#348e91"}}],{margin:{l:130,r:65,t:10,b:55},xaxis:{title:m.unit,automargin:true,zeroline:false},yaxis:{automargin:true,tickfont:{size:11}},bargap:.24,paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});
 }
 function renderMap(){
   const y=+$("mapYear").value,k=$("mapMetric").value,m=DASH.metrics[k],r=currentStatesAt(y);$("mapYearLabel").textContent=y;
@@ -390,11 +574,11 @@ function renderMap(){
 function renderScatter(){
   const y=+$("scatterYear").value,r=currentStatesAt(y),n=nationalForYear(y);$("scatterYearLabel").textContent=y;
   const highlighted=new Set(DASH.scatterHighlights);
-  const base={type:"scatter",mode:"markers",x:r.map(x=>x.vmt_per_capita),y:r.map(x=>x.fuel_per_1000_vmt),text:r.map(x=>x.state),customdata:r.map(x=>[x.state]),marker:{size:9,color:"#8aa2af",opacity:.78,line:{width:1,color:"#fff"}},hovertemplate:"<b>%{text}</b><br>Road VMT per resident: %{x:,.0f}<br>Fuel per 1,000 VMT: %{y:.1f} gallons<extra></extra>"};
+  const base={type:"scatter",mode:"markers",x:r.map(x=>x.vmt_per_capita),y:r.map(x=>x.fuel_per_1000_vmt),text:r.map(x=>x.state),customdata:r.map(x=>[x.state]),marker:{size:9,color:"#9ab4b5",opacity:.78,line:{width:1,color:"#fff"}},hovertemplate:"<b>%{text}</b><br>Road VMT per resident: %{x:,.0f}<br>Fuel per 1,000 VMT: %{y:.1f} gallons<extra></extra>"};
   const hi=r.filter(x=>highlighted.has(x.state));
   const traces=[base];
-  if(hi.length)traces.push({type:"scatter",mode:"markers+text",x:hi.map(x=>x.vmt_per_capita),y:hi.map(x=>x.fuel_per_1000_vmt),text:hi.map(x=>x.state),customdata:hi.map(x=>[x.state]),textposition:"top center",textfont:{size:11,color:"#183d50"},marker:{size:14,color:"#245b78",line:{width:1,color:"#fff"}},hovertemplate:"<b>%{text}</b><br>Road VMT per resident: %{x:,.0f}<br>Fuel per 1,000 VMT: %{y:.1f} gallons<extra></extra>",showlegend:false});
-  Plotly.react("scatterChart",traces,{margin:{l:82,r:20,t:24,b:70},xaxis:{title:"Road VMT (miles per resident)"},yaxis:{title:"Highway fuel (gallons per 1,000 VMT)"},dragmode:"zoom",shapes:[{type:"line",x0:n.vmt_per_capita,x1:n.vmt_per_capita,y0:0,y1:1,yref:"paper",line:{color:"#6e7d87",dash:"dash",width:1}},{type:"line",y0:n.fuel_per_1000_vmt,y1:n.fuel_per_1000_vmt,x0:0,x1:1,xref:"paper",line:{color:"#6e7d87",dash:"dash",width:1}}],paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false,scrollZoom:true});
+  if(hi.length)traces.push({type:"scatter",mode:"markers+text",x:hi.map(x=>x.vmt_per_capita),y:hi.map(x=>x.fuel_per_1000_vmt),text:hi.map(x=>x.state),customdata:hi.map(x=>[x.state]),textposition:"top center",textfont:{size:11,color:"#183d50"},marker:{size:14,color:"#e07854",line:{width:1,color:"#fff"}},hovertemplate:"<b>%{text}</b><br>Road VMT per resident: %{x:,.0f}<br>Fuel per 1,000 VMT: %{y:.1f} gallons<extra></extra>",showlegend:false});
+  Plotly.react("scatterChart",traces,{margin:{l:82,r:20,t:24,b:70},xaxis:{title:"Road VMT (miles per resident)"},yaxis:{title:"Highway fuel (gallons per 1,000 VMT)"},dragmode:"zoom",shapes:[{type:"line",x0:n.vmt_per_capita,x1:n.vmt_per_capita,y0:0,y1:1,yref:"paper",line:{color:"#718e94",dash:"dash",width:1}},{type:"line",y0:n.fuel_per_1000_vmt,y1:n.fuel_per_1000_vmt,x0:0,x1:1,xref:"paper",line:{color:"#718e94",dash:"dash",width:1}}],paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false,scrollZoom:true});
   const p=$("scatterChart");p.removeAllListeners?.("plotly_click");p.on("plotly_click",e=>{const s=e.points?.[0]?.customdata?.[0];if(!s)return;const wasPinned=DASH.scatterHighlights.includes(s);DASH.scatterHighlights=wasPinned?DASH.scatterHighlights.filter(x=>x!==s):[...DASH.scatterHighlights,s];const picker=$("scatterStatePicker");if(!wasPinned)picker.value=s;else if(picker.value===s)picker.value="";renderScatter()});
 }
 function renderEmissionsStats(){
@@ -423,7 +607,7 @@ function renderEmissionsState(){
   Plotly.react("emissionsMap",[{type:"choropleth",locationmode:"USA-states",locations:r.map(x=>x.a),z:r.map(x=>x[k]),text:r.map(x=>x.s),customdata:r.map(x=>[x.s,x[k]]),hovertemplate:`<b>%{customdata[0]}</b><br>${m.label}: %{customdata[1]:.2f}<extra></extra>`,colorbar:{title:m.short}}],{geo:{scope:"usa",bgcolor:"#fff"},margin:{l:0,r:0,t:8,b:0},paper_bgcolor:"#fff"},{responsive:true,displaylogo:false});
   const ranked=[...r].sort((a,b)=>b[k]-a[k]),display=[...ranked].reverse();
   const labels=display.map(x=>`${ranked.findIndex(z=>z.s===x.s)+1}. ${x.s}`);
-  Plotly.react("emissionsRanking",[{type:"bar",orientation:"h",x:display.map(x=>x[k]),y:labels,text:display.map(x=>formatEmission(x[k],k)),textposition:"outside",cliponaxis:false,customdata:display.map(x=>[x.s,ranked.findIndex(z=>z.s===x.s)+1]),hovertemplate:`<b>%{customdata[1]}. %{customdata[0]}</b><br>${m.label}: %{x:,.2f}<extra></extra>`,marker:{color:"#6f8997"}}],{margin:{l:130,r:70,t:10,b:55},xaxis:{title:m.unit,automargin:true,zeroline:false},yaxis:{automargin:true,tickfont:{size:11}},bargap:.24,paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});
+  Plotly.react("emissionsRanking",[{type:"bar",orientation:"h",x:display.map(x=>x[k]),y:labels,text:display.map(x=>formatEmission(x[k],k)),textposition:"outside",cliponaxis:false,customdata:display.map(x=>[x.s,ranked.findIndex(z=>z.s===x.s)+1]),hovertemplate:`<b>%{customdata[1]}. %{customdata[0]}</b><br>${m.label}: %{x:,.2f}<extra></extra>`,marker:{color:"#348e91"}}],{margin:{l:130,r:70,t:10,b:55},xaxis:{title:m.unit,automargin:true,zeroline:false},yaxis:{automargin:true,tickfont:{size:11}},bargap:.24,paper_bgcolor:"#fff",plot_bgcolor:"#fff"},{responsive:true,displaylogo:false});
 }
 function renderAllComparison(){renderChips();renderTrend();renderScatter();}
 function initSectionNav(){
